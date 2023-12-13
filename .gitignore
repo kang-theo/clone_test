@@ -14,7 +14,7 @@ migrate_working_dir/
 *.iml
 *.ipr
 *.iws
-../../Desktop/PF/flutter_study/test_flutter_01/.idea/
+.idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
