@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import './scenes/riverpod_use_example/riverpod_example_view.dart';
+import 'package:mwu/routes/router_delegate.dart';
+import 'package:mwu/routes/router_info_parser.dart';
 
 void main() {
   runApp(
@@ -11,25 +11,35 @@ void main() {
   );
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
-    return MaterialApp(
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  final MWURouterDelegate _routerDelegate = MWURouterDelegate.instance;
+  final MWURouterInformationParser _routerInformationParser =
+      MWURouterInformationParser();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
       title: 'MWU',
-      home: const RiverPodExample(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
         ),
         useMaterial3: true,
       ),
-      // routes: appRoutes,
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _routerInformationParser,
     );
   }
 }

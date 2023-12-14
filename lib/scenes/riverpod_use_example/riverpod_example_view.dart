@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mwu/routes/router_delegate.dart';
 
 import 'riverpod_example_view_model.dart';
 
@@ -21,8 +22,21 @@ class RiverPodExample extends ConsumerWidget {
         ),
       ),
       body: Center(
-        child: Text(
-          'Count: $count',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Count: $count',
+            ),
+            ElevatedButton(
+              onPressed: () {
+                MWURouterDelegate.of(context).push(
+                  MWURoutePath.another(),
+                );
+              },
+              child: const Text("Go to another page"),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
