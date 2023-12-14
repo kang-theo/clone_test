@@ -16,7 +16,10 @@ class MyApp extends ConsumerWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(
+    BuildContext context,
+    WidgetRef ref,
+  ) {
     return MaterialApp(
       title: 'MWU',
       home: const RiverPodExample(),
