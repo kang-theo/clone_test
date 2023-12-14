@@ -11,7 +11,9 @@ class RiverPodExample extends ConsumerWidget {
     final int count = ref.watch(riverpodExampleProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Riverpod Counter Example')),
+      appBar: AppBar(
+        title: const Text('Riverpod Counter Example'),
+      ),
       body: Center(
         child: Text('Count: $count'),
       ),

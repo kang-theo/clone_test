@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'routes/routes.dart';
 import './scenes/riverpod_use_example/riverpod_example_view.dart';
 
-
 void main() {
   runApp(
     const ProviderScope(
@@ -18,7 +17,6 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return MaterialApp(
       title: 'MWU',
       home: const RiverPodExample(),

@@ -6,6 +6,7 @@ class RiverpodExampleViewModel extends StateNotifier<int> {
   void increment() => state++;
 }
 
-final riverpodExampleProvider = StateNotifierProvider<RiverpodExampleViewModel, int>((ref) {
+final riverpodExampleProvider =
+    StateNotifierProvider<RiverpodExampleViewModel, int>((ref) {
   return RiverpodExampleViewModel();
 });
