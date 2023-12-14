@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'riverpod_example_view_model.dart';
 
 class RiverPodExample extends ConsumerWidget {

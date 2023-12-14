@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'routes/routes.dart';
+
 import './scenes/riverpod_use_example/riverpod_example_view.dart';
 
 void main() {
