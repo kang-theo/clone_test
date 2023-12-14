@@ -13,14 +13,20 @@ class RiverPodExample extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Riverpod Counter Example'),
+        title: const Text(
+          'Riverpod Counter Example',
+        ),
       ),
       body: Center(
-        child: Text('Count: $count'),
+        child: Text(
+          'Count: $count',
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => ref.read(riverpodExampleProvider.notifier).increment(),
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+        ),
       ),
       // routes: appRoutes,
     );
