@@ -40,6 +40,7 @@ class MyAppState extends State<MyApp> {
       ),
       routerDelegate: _routerDelegate,
       routeInformationParser: _routerInformationParser,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
