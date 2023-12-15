@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwu/routes/route_path.dart';
 import 'package:mwu/routes/router_delegate.dart';
 
 class MWURouterInformationParser extends RouteInformationParser<MWURoutePath> {

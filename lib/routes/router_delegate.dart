@@ -1,20 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:mwu/scenes/routing_demo/another_page_view.dart';
+import 'package:mwu/routes/route_path.dart';
 import 'package:mwu/scenes/riverpod_use_example/riverpod_example_view.dart';
-
-class MWURoutePath {
-  final String name;
-  final Map<String, dynamic>? parameters;
-  final Widget widget;
-
-  MWURoutePath.example({this.parameters})
-      : name = "example",
-        widget = const RiverPodExample();
-
-  MWURoutePath.another({this.parameters})
-      : name = "another",
-        widget = const AnotherPage();
-}
 
 class MWURouterDelegate extends RouterDelegate<MWURoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<MWURoutePath> {

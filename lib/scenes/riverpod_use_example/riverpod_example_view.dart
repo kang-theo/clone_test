@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mwu/routes/route_path.dart';
 import 'package:mwu/routes/router_delegate.dart';
 
 import 'riverpod_example_view_model.dart';
