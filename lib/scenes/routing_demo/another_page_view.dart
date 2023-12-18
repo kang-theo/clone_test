@@ -7,6 +7,9 @@ class AnotherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Another Page"),
+      ),
       body: Center(
         child: ElevatedButton(
           onPressed: () => MWURouterDelegate.of(context).pop(),

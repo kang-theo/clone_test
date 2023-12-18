@@ -26,6 +26,8 @@ class MWURouterDelegate extends RouterDelegate<MWURoutePath>
     ),
   ];
 
+  List<Page> get pages => _pages;
+
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -55,9 +57,10 @@ class MWURouterDelegate extends RouterDelegate<MWURoutePath>
   }
 
   pop() {
-    if (_pages.length > 1) {
-      _pages.remove(_pages.last);
+    if (_pages.isNotEmpty) {
+      final removed = _pages.removeLast();
       notifyListeners();
+      return removed;
     }
   }
 

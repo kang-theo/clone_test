@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mwu/routes/route_path.dart';
-import 'package:mwu/routes/router_delegate.dart';
 
 class MWURouterInformationParser extends RouteInformationParser<MWURoutePath> {
   @override
@@ -8,7 +7,11 @@ class MWURouterInformationParser extends RouteInformationParser<MWURoutePath> {
     RouteInformation routeInformation,
   ) async {
     final uri = routeInformation.uri.path;
-    return MWURoutePath.example();
+    if (uri == '/another') {
+      return MWURoutePath.another();
+    } else {
+      return MWURoutePath.example();
+    }
   }
 
   @override
