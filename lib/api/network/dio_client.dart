@@ -17,8 +17,6 @@ class ApiService {
       connectTimeout: ApiServiceConstants.connectTimeout,
       receiveTimeout: ApiServiceConstants.receiveTimeout));
 
-  final CancelToken _cancelToken = CancelToken();
-
   static final instance = ApiService._internal();
 
   ApiService._internal();
@@ -33,7 +31,6 @@ class ApiService {
     Map<String, dynamic>? params,
     dynamic data,
     Options? options,
-    CancelToken? cancelToken,
     T Function(dynamic data)? fromJsonT,
     Function(ApiResponse<T>)? onSuccess,
     Function(ApiResponse<T>)? onError,
@@ -44,10 +41,7 @@ class ApiService {
 
     try {
       Response response = await _dio.request(path,
-          queryParameters: params,
-          data: data,
-          options: options,
-          cancelToken: cancelToken ?? _cancelToken);
+          queryParameters: params, data: data, options: options);
 
       ApiResponse<T> apiResponse = _handleResponse<T>(response, fromJsonT);
       if (onSuccess != null) onSuccess(apiResponse);
@@ -121,10 +115,6 @@ class ApiService {
 
   String _getMethodValue(DioMethod method) {
     return method.toString().split('.').last;
-  }
-
-  void cancelRequests({CancelToken? token}) {
-    token ?? _cancelToken.cancel("cancelled");
   }
 
   void refreshAccessToken() {
