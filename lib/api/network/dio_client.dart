@@ -4,8 +4,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../utils/constants/api_service_constants.dart';
-import './api_response_model.dart';
+import '../../utils/constants/api_service_constants.dart';
+import 'api_response_model.dart';
 
 enum DioMethod { get, post, put, delete, patch, head }
 
