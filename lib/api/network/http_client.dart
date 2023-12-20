@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 
 import '../../utils/constants/http_client_constants.dart';
 import './http_methods.dart';
-import 'api_models/mwu_api_response_model.dart';
+import 'api_models/mwu_api_header_model/mwu_api_header_model.dart';
+import 'api_models/mwu_api_response_model/mwu_api_response_model.dart';
 
 class HttpClient {
   String? _accessToken;
@@ -44,7 +43,7 @@ class HttpClient {
     String fullPath = '$version/$path';
 
     // extract option
-    options = options ?? Options(method: method.toString());
+    options = options ?? Options(method: _httpMethodToString(method));
     options.headers?.addAll(await _getDynamicHeaders(withAuth, contentType));
 
     try {
@@ -74,21 +73,12 @@ class HttpClient {
     bool withAuth,
     String contentType,
   ) async {
-    Map<String, String> headers = {
-      'Content-Type': contentType,
-      'Timezone': DateTime.now().timeZoneName,
-      'MWU-User-Response': 'v2',
-      'platform': Platform.isIOS ? 'IOS' : 'ANDROID',
-      // Additional headers
-    };
-    if (contentType == 'application/json') {
-      headers['Accept'] = 'application/json';
-    }
-    // Add authorization header if withAuth is true and accessToken is available
-    if (withAuth && _accessToken != null) {
-      headers['Authorization'] = 'Bearer $_accessToken';
-    }
-    return headers;
+    var headerModel = MWUApiHeaderModel(
+      contentType: contentType,
+      accessToken: _accessToken,
+    );
+
+    return headerModel.toMap(withAuth: withAuth);
   }
 
   MWUApiResponse<T> _handleResponse<T>(
@@ -127,5 +117,10 @@ class HttpClient {
     // TODO: Implement the logic to revoke the access token
     // For now, just setting it to null
     _accessToken = null;
+  }
+
+  // helper to convert http method to string
+  String _httpMethodToString(HttpMethod method) {
+    return method.toString().split('.').last.toUpperCase();
   }
 }
