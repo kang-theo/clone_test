@@ -31,3 +31,4 @@ analyzer:
     - custom_lint
   errors:
     require_trailing_commas: warning
+    invalid_annotation_target: ignore
