@@ -1,29 +1,44 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mwu/api/models/token.dart';
+import 'package:mockito/mockito.dart';
 import 'package:mwu/api/network/http_client.dart';
-import 'package:mwu/api/network/http_methods.dart';
+
+class MockDio extends Mock implements Dio {}
 
 void main() {
-  group('Login API Integration Test', () {
+  group('HttpClient Tests', () {
+    late MockDio mockDio;
     late HttpClient httpClient;
 
     setUp(() {
-      httpClient = HttpClient.instance;
+      mockDio = MockDio();
+      httpClient = HttpClient(dio: mockDio);
     });
 
-    test('Successful login', () async {
-      var response = await httpClient.request<Token>('v1', 'auth/login',
-          method: HttpMethod.post,
-          data: {
-            "username": "qingyan.yang@pixelforce.com.au",
-            "password": "1234567yY.",
-          },
-          withAuth: false,
-          fromJsonT: Token.fromJsonDynamic);
+    test('Successful request', () async {
+      when(mockDio.request(
+        '/api/v1/test/path',
+        queryParameters: anyNamed('queryParameters'),
+        data: anyNamed('data'),
+        options: anyNamed('options'),
+      )).thenAnswer((_) async => Response<dynamic>(
+            requestOptions: RequestOptions(path: '/api/v1/test/path'),
+            data: {
+              "data": 'Mocked Data',
+              "http_status": 200,
+              "message": "Success"
+            },
+            statusCode: 200,
+          ));
+      try {
+        var response = await httpClient.request<String>('v1', 'test/path',
+            fromJsonT: (data) => data['data'] as String);
 
-      expect(response.statusCode, 200);
-      // check type of data
-      expect(response.data, isA<Token>());
+        expect(response.data, equals('Mocked Data'));
+        expect(response.statusCode, equals(200));
+      } catch (e) {
+        fail('Exception thrown during test: $e');
+      }
     });
   });
 }

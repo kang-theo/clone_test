@@ -6,22 +6,27 @@ import 'api_models/mwu_api_header_model/mwu_api_header_model.dart';
 import 'api_models/mwu_api_response_model/mwu_api_response_model.dart';
 
 class HttpClient {
-
   String? _accessToken;
+  final Dio _dio;
 
-  // init
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: HttpClientConstants.baseUrl,
-      connectTimeout: const Duration(milliseconds: 6000),
-      receiveTimeout: const Duration(milliseconds: 6000),
-    ),
-  );
+  // private constructor
+  HttpClient._internal(this._dio);
 
   // singleton
-  static final instance = HttpClient._internal();
+  static HttpClient? _instance;
 
-  HttpClient._internal();
+  // factory constructor
+  factory HttpClient({Dio? dio}) {
+    _instance ??= HttpClient._internal(dio ??
+        Dio(
+          BaseOptions(
+            baseUrl: HttpClientConstants.baseUrl,
+            connectTimeout: const Duration(milliseconds: 6000),
+            receiveTimeout: const Duration(milliseconds: 6000),
+          ),
+        ));
+    return _instance!;
+  }
 
   // set access token from external class
   set accessToken(String? token) {
@@ -29,18 +34,19 @@ class HttpClient {
   }
 
   // invoke this method from endpoints
-  Future<MWUApiResponse<T>> request<T>(String version,
-      String path, {
-        HttpMethod method = HttpMethod.get,
-        Map<String, dynamic>? params,
-        dynamic data,
-        Options? options,
-        bool withAuth = true,
-        String contentType = 'application/json',
-        T Function(dynamic data)? fromJsonT,
-        Function(MWUApiResponse<T>)? onSuccess,
-        Function(MWUApiResponse<T>)? onError,
-      }) async {
+  Future<MWUApiResponse<T>> request<T>(
+    String version,
+    String path, {
+    HttpMethod method = HttpMethod.get,
+    Map<String, dynamic>? params,
+    dynamic data,
+    Options? options,
+    bool withAuth = true,
+    String contentType = 'application/json',
+    T Function(dynamic data)? fromJsonT,
+    Function(MWUApiResponse<T>)? onSuccess,
+    Function(MWUApiResponse<T>)? onError,
+  }) async {
     // get url
     String fullPath = '/api/$version/$path';
 
@@ -59,7 +65,7 @@ class HttpClient {
 
       // convert to mwuApiResponse
       MWUApiResponse<T> mwuApiResponse =
-      MWUApiResponse<T>.fromJson(response.data, fromJsonT!);
+          MWUApiResponse<T>.fromJson(response.data, fromJsonT!);
 
       if (onSuccess != null) onSuccess(mwuApiResponse);
 
@@ -80,8 +86,10 @@ class HttpClient {
   }
 
   // method to get dynamic headers
-  Future<Map<String, String>> _getDynamicHeaders(bool withAuth,
-      String contentType,) async {
+  Future<Map<String, String>> _getDynamicHeaders(
+    bool withAuth,
+    String contentType,
+  ) async {
     var headerModel = MWUApiHeaderModel(
       contentType: contentType,
       accessToken: _accessToken,
@@ -103,10 +111,6 @@ class HttpClient {
 
   // helper to convert http method to string
   String _httpMethodToString(HttpMethod method) {
-    return method
-        .toString()
-        .split('.')
-        .last
-        .toUpperCase();
+    return method.toString().split('.').last.toUpperCase();
   }
 }
