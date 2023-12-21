@@ -14,24 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-MWUApiResponse<T> _$MWUApiResponseFromJson<T>(
-    Map<String, dynamic> json, T Function(Object?) fromJsonT) {
-  return _MWUApiResponse<T>.fromJson(json, fromJsonT);
-}
-
 /// @nodoc
 mixin _$MWUApiResponse<T> {
   T? get data => throw _privateConstructorUsedError;
   @JsonKey(name: 'http_status')
   int get statusCode => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
   Map<String, List<String>>? get errors => throw _privateConstructorUsedError;
   @JsonKey(name: 'error_code')
   String? get errorCode => throw _privateConstructorUsedError;
   Meta? get meta => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
-      throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MWUApiResponseCopyWith<T, MWUApiResponse<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -46,7 +39,7 @@ abstract class $MWUApiResponseCopyWith<T, $Res> {
   $Res call(
       {T? data,
       @JsonKey(name: 'http_status') int statusCode,
-      String? message,
+      String message,
       Map<String, List<String>>? errors,
       @JsonKey(name: 'error_code') String? errorCode,
       Meta? meta});
@@ -69,7 +62,7 @@ class _$MWUApiResponseCopyWithImpl<T, $Res, $Val extends MWUApiResponse<T>>
   $Res call({
     Object? data = freezed,
     Object? statusCode = null,
-    Object? message = freezed,
+    Object? message = null,
     Object? errors = freezed,
     Object? errorCode = freezed,
     Object? meta = freezed,
@@ -83,10 +76,10 @@ class _$MWUApiResponseCopyWithImpl<T, $Res, $Val extends MWUApiResponse<T>>
           ? _value.statusCode
           : statusCode // ignore: cast_nullable_to_non_nullable
               as int,
-      message: freezed == message
+      message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       errors: freezed == errors
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -126,7 +119,7 @@ abstract class _$$MWUApiResponseImplCopyWith<T, $Res>
   $Res call(
       {T? data,
       @JsonKey(name: 'http_status') int statusCode,
-      String? message,
+      String message,
       Map<String, List<String>>? errors,
       @JsonKey(name: 'error_code') String? errorCode,
       Meta? meta});
@@ -148,7 +141,7 @@ class __$$MWUApiResponseImplCopyWithImpl<T, $Res>
   $Res call({
     Object? data = freezed,
     Object? statusCode = null,
-    Object? message = freezed,
+    Object? message = null,
     Object? errors = freezed,
     Object? errorCode = freezed,
     Object? meta = freezed,
@@ -162,10 +155,10 @@ class __$$MWUApiResponseImplCopyWithImpl<T, $Res>
           ? _value.statusCode
           : statusCode // ignore: cast_nullable_to_non_nullable
               as int,
-      message: freezed == message
+      message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       errors: freezed == errors
           ? _value._errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -183,7 +176,7 @@ class __$$MWUApiResponseImplCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-@JsonSerializable(genericArgumentFactories: true)
+
 class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
   const _$MWUApiResponseImpl(
       {this.data,
@@ -194,10 +187,6 @@ class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
       this.meta})
       : _errors = errors;
 
-  factory _$MWUApiResponseImpl.fromJson(
-          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
-      _$$MWUApiResponseImplFromJson(json, fromJsonT);
-
   @override
   final T? data;
   @override
@@ -205,7 +194,7 @@ class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
   final int statusCode;
   @override
   @JsonKey()
-  final String? message;
+  final String message;
   final Map<String, List<String>>? _errors;
   @override
   Map<String, List<String>>? get errors {
@@ -242,7 +231,6 @@ class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
             (identical(other.meta, meta) || other.meta == meta));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -259,25 +247,16 @@ class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
   _$$MWUApiResponseImplCopyWith<T, _$MWUApiResponseImpl<T>> get copyWith =>
       __$$MWUApiResponseImplCopyWithImpl<T, _$MWUApiResponseImpl<T>>(
           this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
-    return _$$MWUApiResponseImplToJson<T>(this, toJsonT);
-  }
 }
 
 abstract class _MWUApiResponse<T> implements MWUApiResponse<T> {
   const factory _MWUApiResponse(
       {final T? data,
       @JsonKey(name: 'http_status') required final int statusCode,
-      final String? message,
+      final String message,
       final Map<String, List<String>>? errors,
       @JsonKey(name: 'error_code') final String? errorCode,
       final Meta? meta}) = _$MWUApiResponseImpl<T>;
-
-  factory _MWUApiResponse.fromJson(
-          Map<String, dynamic> json, T Function(Object?) fromJsonT) =
-      _$MWUApiResponseImpl<T>.fromJson;
 
   @override
   T? get data;
@@ -285,7 +264,7 @@ abstract class _MWUApiResponse<T> implements MWUApiResponse<T> {
   @JsonKey(name: 'http_status')
   int get statusCode;
   @override
-  String? get message;
+  String get message;
   @override
   Map<String, List<String>>? get errors;
   @override

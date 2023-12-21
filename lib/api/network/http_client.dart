@@ -33,7 +33,7 @@ class HttpClient {
     _accessToken = token;
   }
 
-  // invoke this method from endpoints
+  // invoke this method from upper layer
   Future<MWUApiResponse<T>> request<T>(
     String version,
     String path, {
@@ -47,7 +47,7 @@ class HttpClient {
     Function(MWUApiResponse<T>)? onSuccess,
     Function(MWUApiResponse<T>)? onError,
   }) async {
-    // get url
+    // get full url
     String fullPath = '/api/$version/$path';
 
     // extract option
@@ -65,19 +65,28 @@ class HttpClient {
 
       // convert to mwuApiResponse
       MWUApiResponse<T> mwuApiResponse =
-          MWUApiResponse<T>.fromJson(response.data, fromJsonT!);
+          MWUApiResponse<T>.fromDioResponse(response, fromJsonT!);
+
+      print('test1: ${response.data['data']}');
+      print('test2: ${response.statusCode}');
+      print('test3: ${response.statusMessage}');
+      print('test4: ${mwuApiResponse.statusCode}');
+      print('test5: ${mwuApiResponse.message}');
 
       if (onSuccess != null) onSuccess(mwuApiResponse);
 
       return mwuApiResponse;
     } on DioException catch (e) {
+      // handle 400+ and 500+
       // convert to mwuApiResponse
-      MWUApiResponse<T> mwuApiErrResponse = MWUApiResponse<T>(
-        data: null,
-        statusCode: e.response?.statusCode ?? 500,
-        message: e.message,
-        errors: e.response?.data,
-      );
+      MWUApiResponse<T> mwuApiErrResponse =
+          MWUApiResponse<T>.fromDioException(e);
+
+      print('test1: ${e.response}');
+      print('test2: ${e.response!.statusCode}');
+      print('test3: ${e.response!.data['message']}');
+      print('test4: ${e.response!.statusMessage}');
+      print('test1: $mwuApiErrResponse');
 
       if (onError != null) onError(mwuApiErrResponse);
 
