@@ -80,7 +80,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Futura Std Book
+    - family: Futura Std
       fonts:
         - asset: resources/fonts/FuturaStd/FuturaStdBook.otf
           weight: 400
