@@ -6,8 +6,10 @@ import 'api_models/mwu_api_header_model/mwu_api_header_model.dart';
 import 'api_models/mwu_api_response_model/mwu_api_response_model.dart';
 
 class HttpClient {
+
   String? _accessToken;
 
+  // init
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: HttpClientConstants.baseUrl,
@@ -21,31 +23,32 @@ class HttpClient {
 
   HttpClient._internal();
 
+  // set access token from external class
   set accessToken(String? token) {
     _accessToken = token;
   }
 
   // invoke this method from endpoints
-  Future<MWUApiResponse<T>> request<T>(
-    String version,
-    String path, {
-    HttpMethod method = HttpMethod.get,
-    Map<String, dynamic>? params,
-    dynamic data,
-    Options? options,
-    bool withAuth = true,
-    String contentType = 'application/json',
-    T Function(dynamic data)? fromJsonT,
-    Function(MWUApiResponse<T>)? onSuccess,
-    Function(MWUApiResponse<T>)? onError,
-  }) async {
+  Future<MWUApiResponse<T>> request<T>(String version,
+      String path, {
+        HttpMethod method = HttpMethod.get,
+        Map<String, dynamic>? params,
+        dynamic data,
+        Options? options,
+        bool withAuth = true,
+        String contentType = 'application/json',
+        T Function(dynamic data)? fromJsonT,
+        Function(MWUApiResponse<T>)? onSuccess,
+        Function(MWUApiResponse<T>)? onError,
+      }) async {
     // get url
-    String fullPath = '$version/$path';
+    String fullPath = '/api/$version/$path';
 
     // extract option
     options = options ?? Options(method: _httpMethodToString(method));
     options.headers?.addAll(await _getDynamicHeaders(withAuth, contentType));
 
+    // invoke dio request
     try {
       Response response = await _dio.request(
         fullPath,
@@ -54,57 +57,36 @@ class HttpClient {
         options: options,
       );
 
+      // convert to mwuApiResponse
       MWUApiResponse<T> mwuApiResponse =
-          _handleResponse<T>(response, fromJsonT);
+      MWUApiResponse<T>.fromJson(response.data, fromJsonT!);
 
       if (onSuccess != null) onSuccess(mwuApiResponse);
 
       return mwuApiResponse;
     } on DioException catch (e) {
-      MWUApiResponse<T> apiError = _handleDioError<T>(e, fromJsonT);
+      // convert to mwuApiResponse
+      MWUApiResponse<T> mwuApiErrResponse = MWUApiResponse<T>(
+        data: null,
+        statusCode: e.response?.statusCode ?? 500,
+        message: e.message,
+        errors: e.response?.data,
+      );
 
-      if (onError != null) onError(apiError);
+      if (onError != null) onError(mwuApiErrResponse);
 
-      return apiError;
+      return mwuApiErrResponse;
     }
   }
 
-  Future<Map<String, String>> _getDynamicHeaders(
-    bool withAuth,
-    String contentType,
-  ) async {
+  // method to get dynamic headers
+  Future<Map<String, String>> _getDynamicHeaders(bool withAuth,
+      String contentType,) async {
     var headerModel = MWUApiHeaderModel(
       contentType: contentType,
       accessToken: _accessToken,
     );
-
     return headerModel.toMap(withAuth: withAuth);
-  }
-
-  MWUApiResponse<T> _handleResponse<T>(
-      Response response, T Function(dynamic data)? fromJsonT) {
-    // handle 200-300
-    if (fromJsonT != null) {
-      return MWUApiResponse<T>.fromJson(response.data, fromJsonT);
-    } else {
-      throw Exception(
-          "fromJsonT function must be provided for type conversion.");
-    }
-  }
-
-  MWUApiResponse<T> _handleDioError<T>(
-      DioException error, T Function(dynamic data)? fromJsonT) {
-    // handle 400+ & 500+
-    if (fromJsonT != null) {
-      return MWUApiResponse<T>(
-        statusCode: error.response?.statusCode ?? 500,
-        message: error.message,
-        data: fromJsonT({}),
-      );
-    } else {
-      throw Exception(
-          "fromJsonT function must be provided for type conversion in error handling.");
-    }
   }
 
   void refreshAccessToken() {
@@ -121,6 +103,10 @@ class HttpClient {
 
   // helper to convert http method to string
   String _httpMethodToString(HttpMethod method) {
-    return method.toString().split('.').last.toUpperCase();
+    return method
+        .toString()
+        .split('.')
+        .last
+        .toUpperCase();
   }
 }

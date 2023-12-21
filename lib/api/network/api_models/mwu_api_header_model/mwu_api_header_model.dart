@@ -18,7 +18,9 @@ class MWUApiHeaderModel with _$MWUApiHeaderModel {
   Map<String, String> toMap({bool withAuth = true}) {
     final headers = <String, String>{
       'Content-Type': contentType,
-      'Timezone': timezone ?? DateTime.now().timeZoneName,
+      'Timezone': timezone ?? DateTime
+          .now()
+          .timeZoneName,
       'MWU-User-Response': mwuUserResponse,
       'platform': platform ?? (Platform.isIOS ? 'IOS' : 'ANDROID'),
     };
