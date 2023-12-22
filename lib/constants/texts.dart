@@ -15,6 +15,7 @@ class IntroSlideText {
 class LaunchFlowTexts {
   final List<IntroSlideText> introSlideTexts;
   final List<String> appTitle;
+  final String introButtonText;
 
   LaunchFlowTexts()
       : introSlideTexts = [
@@ -45,5 +46,6 @@ class LaunchFlowTexts {
         appTitle = [
           'move.',
           'withus',
-        ].map((str) => str.toUpperCase()).toList();
+        ].map((str) => str.toUpperCase()).toList(),
+        introButtonText = "Let's get started";
 }

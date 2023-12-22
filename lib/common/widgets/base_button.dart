@@ -14,24 +14,27 @@ class BaseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        foregroundColor: textColor,
-        backgroundColor: backgroundColor,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        elevation: 0,
-        splashFactory: NoSplash.splashFactory,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 30),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          foregroundColor: textColor,
+          backgroundColor: backgroundColor,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          elevation: 0,
+          splashFactory: NoSplash.splashFactory,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7),
+          ),
         ),
-      ),
-      child: Text(
-        buttonText.toUpperCase(),
-        style: TextStyle(
-          color: textColor,
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
+        child: Text(
+          buttonText.toUpperCase(),
+          style: TextStyle(
+            color: textColor,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
