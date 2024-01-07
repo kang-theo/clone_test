@@ -23,7 +23,7 @@ mixin _$MWUApiResponse<T> {
   Map<String, List<String>>? get errors => throw _privateConstructorUsedError;
   @JsonKey(name: 'error_code')
   String? get errorCode => throw _privateConstructorUsedError;
-  Meta? get meta => throw _privateConstructorUsedError;
+  MWUApiResponseMeta? get meta => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MWUApiResponseCopyWith<T, MWUApiResponse<T>> get copyWith =>
@@ -42,9 +42,9 @@ abstract class $MWUApiResponseCopyWith<T, $Res> {
       String message,
       Map<String, List<String>>? errors,
       @JsonKey(name: 'error_code') String? errorCode,
-      Meta? meta});
+      MWUApiResponseMeta? meta});
 
-  $MetaCopyWith<$Res>? get meta;
+  $MWUApiResponseMetaCopyWith<$Res>? get meta;
 }
 
 /// @nodoc
@@ -91,18 +91,18 @@ class _$MWUApiResponseCopyWithImpl<T, $Res, $Val extends MWUApiResponse<T>>
       meta: freezed == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as Meta?,
+              as MWUApiResponseMeta?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $MetaCopyWith<$Res>? get meta {
+  $MWUApiResponseMetaCopyWith<$Res>? get meta {
     if (_value.meta == null) {
       return null;
     }
 
-    return $MetaCopyWith<$Res>(_value.meta!, (value) {
+    return $MWUApiResponseMetaCopyWith<$Res>(_value.meta!, (value) {
       return _then(_value.copyWith(meta: value) as $Val);
     });
   }
@@ -122,10 +122,10 @@ abstract class _$$MWUApiResponseImplCopyWith<T, $Res>
       String message,
       Map<String, List<String>>? errors,
       @JsonKey(name: 'error_code') String? errorCode,
-      Meta? meta});
+      MWUApiResponseMeta? meta});
 
   @override
-  $MetaCopyWith<$Res>? get meta;
+  $MWUApiResponseMetaCopyWith<$Res>? get meta;
 }
 
 /// @nodoc
@@ -170,7 +170,7 @@ class __$$MWUApiResponseImplCopyWithImpl<T, $Res>
       meta: freezed == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as Meta?,
+              as MWUApiResponseMeta?,
     ));
   }
 }
@@ -209,7 +209,7 @@ class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
   @JsonKey(name: 'error_code')
   final String? errorCode;
   @override
-  final Meta? meta;
+  final MWUApiResponseMeta? meta;
 
   @override
   String toString() {
@@ -256,7 +256,7 @@ abstract class _MWUApiResponse<T> implements MWUApiResponse<T> {
       final String message,
       final Map<String, List<String>>? errors,
       @JsonKey(name: 'error_code') final String? errorCode,
-      final Meta? meta}) = _$MWUApiResponseImpl<T>;
+      final MWUApiResponseMeta? meta}) = _$MWUApiResponseImpl<T>;
 
   @override
   T? get data;
@@ -271,87 +271,9 @@ abstract class _MWUApiResponse<T> implements MWUApiResponse<T> {
   @JsonKey(name: 'error_code')
   String? get errorCode;
   @override
-  Meta? get meta;
+  MWUApiResponseMeta? get meta;
   @override
   @JsonKey(ignore: true)
   _$$MWUApiResponseImplCopyWith<T, _$MWUApiResponseImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
-}
-
-Meta _$MetaFromJson(Map<String, dynamic> json) {
-  return _Meta.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Meta {
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $MetaCopyWith<$Res> {
-  factory $MetaCopyWith(Meta value, $Res Function(Meta) then) =
-      _$MetaCopyWithImpl<$Res, Meta>;
-}
-
-/// @nodoc
-class _$MetaCopyWithImpl<$Res, $Val extends Meta>
-    implements $MetaCopyWith<$Res> {
-  _$MetaCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$MetaImplCopyWith<$Res> {
-  factory _$$MetaImplCopyWith(
-          _$MetaImpl value, $Res Function(_$MetaImpl) then) =
-      __$$MetaImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$MetaImplCopyWithImpl<$Res>
-    extends _$MetaCopyWithImpl<$Res, _$MetaImpl>
-    implements _$$MetaImplCopyWith<$Res> {
-  __$$MetaImplCopyWithImpl(_$MetaImpl _value, $Res Function(_$MetaImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$MetaImpl implements _Meta {
-  const _$MetaImpl();
-
-  factory _$MetaImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MetaImplFromJson(json);
-
-  @override
-  String toString() {
-    return 'Meta()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$MetaImpl);
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MetaImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Meta implements Meta {
-  const factory _Meta() = _$MetaImpl;
-
-  factory _Meta.fromJson(Map<String, dynamic> json) = _$MetaImpl.fromJson;
 }

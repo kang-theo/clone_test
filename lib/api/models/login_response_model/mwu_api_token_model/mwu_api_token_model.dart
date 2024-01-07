@@ -13,8 +13,4 @@ class MWUApiToken with _$MWUApiToken {
 
   factory MWUApiToken.fromJson(Map<String, dynamic> json) =>
       _$MWUApiTokenFromJson(json);
-
-  static MWUApiToken fromJsonDynamic(dynamic json) {
-    return MWUApiToken.fromJson(json as Map<String, dynamic>);
-  }
 }

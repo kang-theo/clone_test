@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-import '../../utils/constants/http_client_constants.dart';
-import './http_methods.dart';
-import 'api_models/mwu_api_header_model/mwu_api_header_model.dart';
-import 'api_models/mwu_api_response_model/mwu_api_response_model.dart';
+import '../../../utils/constants/http_client_constants.dart';
+import '../api_models/api_request_methods_model/api_request_methods_model.dart';
+import '../api_models/mwu_api_header_model/mwu_api_header_model.dart';
+import '../api_models/mwu_api_response_model/mwu_api_response_model.dart';
 
 class HttpClient {
   String? _accessToken;
@@ -13,19 +13,20 @@ class HttpClient {
   HttpClient._internal(this._dio);
 
   // singleton
-  static HttpClient? _instance;
+  static final HttpClient _instance = HttpClient._internal(
+    // initialize Dio obj -> _dio
+    Dio(
+      BaseOptions(
+        baseUrl: HttpClientConstants.baseUrl,
+        connectTimeout: const Duration(milliseconds: 6000),
+        receiveTimeout: const Duration(milliseconds: 6000),
+      ),
+    ),
+  );
 
-  // factory constructor
-  factory HttpClient({Dio? dio}) {
-    _instance ??= HttpClient._internal(dio ??
-        Dio(
-          BaseOptions(
-            baseUrl: HttpClientConstants.baseUrl,
-            connectTimeout: const Duration(milliseconds: 6000),
-            receiveTimeout: const Duration(milliseconds: 6000),
-          ),
-        ));
-    return _instance!;
+  // factory constructor to get singleton instance
+  factory HttpClient() {
+    return _instance;
   }
 
   // set access token from external class
@@ -43,7 +44,7 @@ class HttpClient {
     Options? options,
     bool withAuth = true,
     String contentType = 'application/json',
-    T Function(dynamic data)? fromJsonT,
+    T Function(Map<String, dynamic>)? fromJsonT,
     Function(MWUApiResponse<T>)? onSuccess,
     Function(MWUApiResponse<T>)? onError,
   }) async {
@@ -51,9 +52,14 @@ class HttpClient {
     String fullPath = '/api/$version/$path';
 
     // extract option
-    options = options ?? Options(method: _httpMethodToString(method));
-    options.headers?.addAll(await _getDynamicHeaders(withAuth, contentType));
+    // Get dynamic headers
+    Map<String, String> headers =
+        await _getDynamicHeaders(withAuth, contentType);
+    print('HTTP Headers: $headers');
 
+    // Extract options and add headers
+    options = options ?? Options(method: _httpMethodToString(method));
+    options.headers = headers;
     // invoke dio request
     try {
       Response response = await _dio.request(
@@ -76,21 +82,19 @@ class HttpClient {
       if (onSuccess != null) onSuccess(mwuApiResponse);
 
       return mwuApiResponse;
-    } on DioException catch (e) {
-      // handle 400+ and 500+
+    } catch (e) {
       // convert to mwuApiResponse
-      MWUApiResponse<T> mwuApiErrResponse =
-          MWUApiResponse<T>.fromDioException(e);
+      MWUApiResponse<T> mwuApiError = MWUApiResponse<T>.fromException(e);
 
-      print('test1: ${e.response}');
-      print('test2: ${e.response!.statusCode}');
-      print('test3: ${e.response!.data['message']}');
-      print('test4: ${e.response!.statusMessage}');
-      print('test1: $mwuApiErrResponse');
+      print('test1: ${e}');
+      print('test2: ${mwuApiError.statusCode}');
+      print('test3: ${mwuApiError.message}');
+      print('test4: ${mwuApiError.errorCode}');
+      print('test5: ${mwuApiError.data}');
 
-      if (onError != null) onError(mwuApiErrResponse);
+      if (onError != null) onError(mwuApiError);
 
-      return mwuApiErrResponse;
+      return mwuApiError;
     }
   }
 
@@ -103,6 +107,7 @@ class HttpClient {
       contentType: contentType,
       accessToken: _accessToken,
     );
+
     return headerModel.toMap(withAuth: withAuth);
   }
 

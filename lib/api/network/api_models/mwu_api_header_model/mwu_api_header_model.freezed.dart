@@ -17,13 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MWUApiHeaderModel {
   String get contentType => throw _privateConstructorUsedError;
-
   String? get accessToken => throw _privateConstructorUsedError;
-
   String? get timezone => throw _privateConstructorUsedError;
-
   String get mwuUserResponse => throw _privateConstructorUsedError;
-
   String? get platform => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -36,7 +32,6 @@ abstract class $MWUApiHeaderModelCopyWith<$Res> {
   factory $MWUApiHeaderModelCopyWith(
           MWUApiHeaderModel value, $Res Function(MWUApiHeaderModel) then) =
       _$MWUApiHeaderModelCopyWithImpl<$Res, MWUApiHeaderModel>;
-
   @useResult
   $Res call(
       {String contentType,
@@ -53,7 +48,6 @@ class _$MWUApiHeaderModelCopyWithImpl<$Res, $Val extends MWUApiHeaderModel>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -97,7 +91,6 @@ abstract class _$$MWUApiHeaderModelImplCopyWith<$Res>
   factory _$$MWUApiHeaderModelImplCopyWith(_$MWUApiHeaderModelImpl value,
           $Res Function(_$MWUApiHeaderModelImpl) then) =
       __$$MWUApiHeaderModelImplCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -205,12 +198,6 @@ class _$MWUApiHeaderModelImpl implements _MWUApiHeaderModel {
   _$$MWUApiHeaderModelImplCopyWith<_$MWUApiHeaderModelImpl> get copyWith =>
       __$$MWUApiHeaderModelImplCopyWithImpl<_$MWUApiHeaderModelImpl>(
           this, _$identity);
-
-  @override
-  Map<String, String> toMap({bool withAuth = true}) {
-    // TODO: implement toMap
-    throw UnimplementedError();
-  }
 }
 
 abstract class _MWUApiHeaderModel implements MWUApiHeaderModel {
@@ -223,19 +210,14 @@ abstract class _MWUApiHeaderModel implements MWUApiHeaderModel {
 
   @override
   String get contentType;
-
   @override
   String? get accessToken;
-
   @override
   String? get timezone;
-
   @override
   String get mwuUserResponse;
-
   @override
   String? get platform;
-
   @override
   @JsonKey(ignore: true)
   _$$MWUApiHeaderModelImplCopyWith<_$MWUApiHeaderModelImpl> get copyWith =>

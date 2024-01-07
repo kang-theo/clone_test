@@ -13,14 +13,13 @@ class MWUApiHeaderModel with _$MWUApiHeaderModel {
     @Default('v2') String mwuUserResponse,
     String? platform,
   }) = _MWUApiHeaderModel;
+}
 
-  // Method to convert model to Map<String, String>
+extension MWUApiHeaderModelExtension on MWUApiHeaderModel {
   Map<String, String> toMap({bool withAuth = true}) {
     final headers = <String, String>{
       'Content-Type': contentType,
-      'Timezone': timezone ?? DateTime
-          .now()
-          .timeZoneName,
+      'Timezone': timezone ?? DateTime.now().timeZoneName,
       'MWU-User-Response': mwuUserResponse,
       'platform': platform ?? (Platform.isIOS ? 'IOS' : 'ANDROID'),
     };
