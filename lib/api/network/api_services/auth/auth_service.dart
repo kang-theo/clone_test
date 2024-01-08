@@ -1,9 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:mwu/api/network/api_models/api_request_methods_model/api_request_methods_model.dart';
 import 'package:mwu/api/network/api_models/mwu_api_response_model/mwu_api_response_model.dart';
 import 'package:mwu/api/network/api_protocols/http_client.dart';
-import 'package:mwu/api/network/api_protocols/dio_client.dart';
-import 'package:mwu/api/network/api_models/mwu_api_response_model/mwu_api_response_model.dart';
 
 class AuthService {
 
@@ -64,7 +61,6 @@ class AuthService {
     httpClient.accessToken =
         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuc3RhZ2luZy5ib2RpZXNieXJhY2hlbC5pbmZvXC9hcGlcL3YxXC9hdXRoXC9sb2dpbiIsImlhdCI6MTcwNDY4NDU2NSwiZXhwIjoxNzA4MTQwNTY1LCJuYmYiOjE3MDQ2ODQ1NjUsImp0aSI6IkJsQ2R4aG1BSXN6ZHVkTDgiLCJzdWIiOjMzMzcyMCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.mvl5niLjlo274_xcCFyci5eCQ8COvJwrBIXHxG-kB44";
 
-
       try {
         Response response = await _httpClient.getRequest(
           'v1',
@@ -79,7 +75,6 @@ class AuthService {
         print('test3: ${response.statusMessage}');
         print('test4: ${mwuApiResponse.statusCode}');
         print('test5: ${mwuApiResponse.message}');
-
 
         return mwuApiResponse;
 

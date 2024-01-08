@@ -14,77 +14,96 @@ class HttpClient {
   }
 
   // methods to send http requests can be invoked by external classes
-  Future<Response> getRequest(
+  Future<Response> getRequest<T>(
       String version,
-      String path, {
+      String path,
+      {
+        String? userId,
         Map<String, dynamic>? params,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
-    String fullPath = '/api/$version/$path';
+
+    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
+
     return _request(fullPath, method: HttpMethod.get, params: params, withAuth: withAuth, contentType: contentType);
   }
 
-  Future<Response> postRequest(
+  Future<Response> postRequest<T>(
       String version,
-      String path, {
+      String path,
+      {
+        String? userId,
         Map<String, dynamic>? params,
         dynamic data,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
-    String fullPath = '/api/$version/$path';
+
+    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
+
     return _request(fullPath, method: HttpMethod.post, params: params, data: data, withAuth: withAuth, contentType: contentType);
   }
 
-  Future<Response> putRequest(
+  Future<Response> putRequest<T>(
       String version,
-      String path, {
+      String path,
+      {
+        String? userId,
+        Map<String, dynamic>? params,
+        dynamic data,
+        String contentType = 'application/json',
+      }) {
+
+    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
+
+    return _request(fullPath, method: HttpMethod.put, params: params, data: data, contentType: contentType);
+  }
+
+  Future<Response> deleteRequest<T>(
+      String version,
+      String path,
+      {
+        String? userId,
+        Map<String, dynamic>? params,
+        String contentType = 'application/json',
+      }) {
+
+    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
+    return _request(fullPath, method: HttpMethod.delete, params: params, contentType: contentType);
+  }
+
+  Future<Response> patchRequest<T>(
+      String version,
+      String path,
+      {
+        String? userId,
         Map<String, dynamic>? params,
         dynamic data,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
-    String fullPath = '/api/$version/$path';
-    return _request(fullPath, method: HttpMethod.put, params: params, data: data, withAuth: withAuth, contentType: contentType);
-  }
 
-  Future<Response> deleteRequest(
-      String version,
-      String path, {
-        Map<String, dynamic>? params,
-        bool withAuth = true,
-        String contentType = 'application/json',
-      }) {
-    String fullPath = '/api/$version/$path';
-    return _request(fullPath, method: HttpMethod.delete, params: params, withAuth: withAuth, contentType: contentType);
-  }
-
-  Future<Response> patchRequest(
-      String version,
-      String path, {
-        Map<String, dynamic>? params,
-        dynamic data,
-        bool withAuth = true,
-        String contentType = 'application/json',
-      }) {
-    String fullPath = '/api/$version/$path';
+    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
     return _request(fullPath, method: HttpMethod.patch, params: params, data: data, withAuth: withAuth, contentType: contentType);
   }
 
-  Future<Response> headRequest(
+  Future<Response> headRequest<T>(
       String version,
-      String path, {
+      String path,
+      {
+        String? userId,
         Map<String, dynamic>? params,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
-    String fullPath = '/api/$version/$path';
+
+    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
     return _request(fullPath, method: HttpMethod.head, params: params, withAuth: withAuth, contentType: contentType);
   }
 
   // private method to send http requests
-  Future<Response> _request(
+  Future<Response> _request<T>(
     String fullPath, {
     HttpMethod method = HttpMethod.get,
     Map<String, dynamic>? params,
@@ -101,6 +120,9 @@ class HttpClient {
     // Initialize options and add headers
     Options options = Options(method: _httpMethodToString(method));
     options.headers = headers;
+
+    // write a method to transfer T to Map<String,dynamic>
+
 
     try {
       // invoke dio request
@@ -149,4 +171,5 @@ class HttpClient {
   String _httpMethodToString(HttpMethod method) {
     return method.toString().split('.').last.toUpperCase();
   }
+
 }
