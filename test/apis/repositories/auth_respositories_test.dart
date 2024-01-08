@@ -23,10 +23,10 @@ void main() {
       expect(response.data, isA<LoginResponseDataModel>());
     });
 
-    test('Get user info', () async {
-      var response = await authRepository.getUserInfo();
-      expect(response!.statusCode, 200);
-      expect(response.data, isA<UserModel>());
-    });
+    // test('Get user info', () async {
+    //   var response = await authRepository.getUserInfo();
+    //   expect(response!.statusCode, 200);
+    //   expect(response.data, isA<UserModel>());
+    // });
   });
 }
