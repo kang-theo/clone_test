@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:mwu/constants/colors.dart';
 import 'package:mwu/constants/images.dart';
+import 'package:mwu/constants/paddings.dart';
 import 'package:mwu/constants/texts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -23,7 +25,12 @@ class _IntroSlidesState extends State<IntroSlides> {
   Widget build(BuildContext context) {
     final appTitle = MWUTexts.launchFlowTexts.appTitle;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final titleSmallTheme = Theme.of(context).textTheme.titleSmall;
+    final appTitleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
+          color: primaryColor,
+        );
+    final appTitleBoldStyle = appTitleStyle?.copyWith(
+      fontWeight: FontWeight.w700,
+    );
 
     return Stack(
       children: [
@@ -34,6 +41,7 @@ class _IntroSlidesState extends State<IntroSlides> {
             setState(() {
               currentPageIndex = index;
             });
+            log(pageController.page.toString());
           },
         ),
         Column(
@@ -41,28 +49,23 @@ class _IntroSlidesState extends State<IntroSlides> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.only(top: 70),
+              padding: MWUPaddings.top70,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     appTitle[0],
-                    style: titleSmallTheme?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
-                    ),
+                    style: appTitleBoldStyle,
                   ),
                   Text(
                     appTitle[1],
-                    style: titleSmallTheme?.copyWith(
-                      color: primaryColor,
-                    ),
+                    style: appTitleStyle,
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 100),
+              padding: MWUPaddings.bottom100,
               child: SlidePageIndicator(
                 pageController: pageController,
                 currentPageIndex: currentPageIndex,
@@ -199,12 +202,16 @@ class SlideText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final headlineMediumTheme = textTheme.headlineMedium;
-    final titleMediumTheme = textTheme.titleMedium;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final slideTitleStyle = textTheme.headlineMedium?.copyWith(
+      color: primaryColor,
+    );
+    final slideDescStyle = textTheme.titleMedium?.copyWith(
+      color: primaryColor,
+    );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
+      padding: MWUPaddings.horizontal50,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -212,16 +219,12 @@ class SlideText extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: headlineMediumTheme!.copyWith(
-              color: primaryColor,
-            ),
+            style: slideTitleStyle,
           ),
           Text(
             subTitle,
             textAlign: TextAlign.center,
-            style: titleMediumTheme!.copyWith(
-              color: primaryColor,
-            ),
+            style: slideDescStyle,
           ),
           const SizedBox(
             height: 160,
@@ -267,8 +270,8 @@ class SlidePageIndicator extends StatelessWidget {
         radius: 16,
         dotWidth: 8,
         dotHeight: 8,
-        dotColor: AppColors.grey300,
-        activeDotColor: AppColors.white,
+        dotColor: MWUColors.grey300,
+        activeDotColor: MWUColors.white,
         paintStyle: PaintingStyle.fill,
       ),
     );

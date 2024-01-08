@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mwu/common/widgets/base_button.dart';
+import 'package:mwu/constants/paddings.dart';
 import 'package:mwu/constants/texts.dart';
 import 'package:mwu/scenes/app_launch/widgets/intro_slides.dart';
 
@@ -21,16 +22,17 @@ class SplashPageState extends State<SplashPage> {
       body: Stack(
         children: [
           const IntroSlides(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              BaseButton(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: MWUPaddings.bottom15,
+              child: BaseButton(
                 backgroundColor: primaryColor,
                 textColor: secondaryColor,
                 buttonText: buttonText,
+                onPressed: () => {},
               ),
-            ],
+            ),
           ),
         ],
       ),

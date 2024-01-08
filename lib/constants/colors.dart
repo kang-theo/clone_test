@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppColors {
+class MWUColors {
   static const Color red = Color(0xffFF0000);
   static const Color tangerine = Color(0xffF5833E);
   static const Color blushPink = Color(0xffEBA6B7);

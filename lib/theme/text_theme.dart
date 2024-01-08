@@ -16,6 +16,11 @@ class AppTextTheme {
           fontFamily: 'Gill Sans',
           fontSize: 18.0,
         ),
+        labelMedium: TextStyle(
+          fontFamily: 'Gill Sans',
+          fontSize: 15.0,
+          fontWeight: FontWeight.w700,
+        ),
         titleSmall: TextStyle(
           fontFamily: 'Futura Std',
           fontSize: 24.0,
