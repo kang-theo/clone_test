@@ -13,19 +13,85 @@ class HttpClient {
     _accessToken = token;
   }
 
-  // invoke this method from upper layer
-  Future<Response> request(
-    String version,
-    String path, {
+  // methods to send http requests can be invoked by external classes
+  Future<Response> getRequest(
+      String version,
+      String path, {
+        Map<String, dynamic>? params,
+        bool withAuth = true,
+        String contentType = 'application/json',
+      }) {
+    String fullPath = '/api/$version/$path';
+    return _request(fullPath, method: HttpMethod.get, params: params, withAuth: withAuth, contentType: contentType);
+  }
+
+  Future<Response> postRequest(
+      String version,
+      String path, {
+        Map<String, dynamic>? params,
+        dynamic data,
+        bool withAuth = true,
+        String contentType = 'application/json',
+      }) {
+    String fullPath = '/api/$version/$path';
+    return _request(fullPath, method: HttpMethod.post, params: params, data: data, withAuth: withAuth, contentType: contentType);
+  }
+
+  Future<Response> putRequest(
+      String version,
+      String path, {
+        Map<String, dynamic>? params,
+        dynamic data,
+        bool withAuth = true,
+        String contentType = 'application/json',
+      }) {
+    String fullPath = '/api/$version/$path';
+    return _request(fullPath, method: HttpMethod.put, params: params, data: data, withAuth: withAuth, contentType: contentType);
+  }
+
+  Future<Response> deleteRequest(
+      String version,
+      String path, {
+        Map<String, dynamic>? params,
+        bool withAuth = true,
+        String contentType = 'application/json',
+      }) {
+    String fullPath = '/api/$version/$path';
+    return _request(fullPath, method: HttpMethod.delete, params: params, withAuth: withAuth, contentType: contentType);
+  }
+
+  Future<Response> patchRequest(
+      String version,
+      String path, {
+        Map<String, dynamic>? params,
+        dynamic data,
+        bool withAuth = true,
+        String contentType = 'application/json',
+      }) {
+    String fullPath = '/api/$version/$path';
+    return _request(fullPath, method: HttpMethod.patch, params: params, data: data, withAuth: withAuth, contentType: contentType);
+  }
+
+  Future<Response> headRequest(
+      String version,
+      String path, {
+        Map<String, dynamic>? params,
+        bool withAuth = true,
+        String contentType = 'application/json',
+      }) {
+    String fullPath = '/api/$version/$path';
+    return _request(fullPath, method: HttpMethod.head, params: params, withAuth: withAuth, contentType: contentType);
+  }
+
+  // private method to send http requests
+  Future<Response> _request(
+    String fullPath, {
     HttpMethod method = HttpMethod.get,
     Map<String, dynamic>? params,
     dynamic data,
     bool withAuth = true,
     String contentType = 'application/json',
   }) async {
-    // get full url
-    String fullPath = '/api/$version/$path';
-
     // Get dynamic headers
     Map<String, String> headers =
         await _getDynamicHeaders(withAuth, contentType);

@@ -4,9 +4,8 @@ import 'package:mwu/api/network/api_models/mwu_api_response_model/mwu_api_respon
 import 'package:mwu/api/network/api_services/auth/auth_service.dart';
 
 class AuthRepository implements Exception {
-  final AuthService _authService;
 
-  AuthRepository(this._authService);
+  final AuthService _authService = AuthService();
 
   Future<MWUApiResponse<LoginResponseDataModel>?> login(
       String username, String password) async {

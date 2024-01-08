@@ -21,7 +21,7 @@ void main() {
       expect(response.data, isA<LoginResponseDataModel>());
     });
 
-    test('Fail login', () async {
+    test('Fail login with wrong password', () async {
       var response = await authService.reqLogin<LoginResponseDataModel>(
         "qingyan.yang@pixelforce.com.au",
         "1234",

@@ -7,18 +7,19 @@ import 'package:mwu/api/network/api_models/mwu_api_response_model/mwu_api_respon
 
 class AuthService {
 
+  final HttpClient _httpClient = HttpClient();
+
   Future<MWUApiResponse<T>> reqLogin<T>(
     String username,
     String password,
     T Function(Map<String, dynamic>) fromJsonT,
-    // Function(MWUApiResponse<T>)? onSuccess,
-    // Function(MWUApiResponse<T>)? onError,
+
     ) async {
+
     try {
-      Response response = await HttpClient().request(
+      Response response = await _httpClient.postRequest(
       'v1',
       'auth/login',
-      method: HttpMethod.post,
       data: {
       'username': username,
       'password': password,
@@ -57,6 +58,7 @@ class AuthService {
   Future<MWUApiResponse<T>> reqUser<T>(
       T Function(Map<String, dynamic>) fromJsonT) async {
 
+
     HttpClient httpClient = HttpClient();
     // for testing
     httpClient.accessToken =
@@ -64,7 +66,7 @@ class AuthService {
 
 
       try {
-        Response response = await httpClient.request(
+        Response response = await _httpClient.getRequest(
           'v1',
           'auth/user',
         );

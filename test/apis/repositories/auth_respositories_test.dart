@@ -6,12 +6,10 @@ import 'package:mwu/api/repositories/auth/auth.dart';
 
 void main() {
   group('AuthRepository Test', () {
-    late AuthService authService;
     late AuthRepository authRepository;
 
     setUp(() {
-      authService = AuthService();
-      authRepository = AuthRepository(authService);
+      authRepository = AuthRepository();
     });
 
     test('Successful login', () async {
