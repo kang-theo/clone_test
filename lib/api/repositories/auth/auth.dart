@@ -9,14 +9,18 @@ class AuthRepository implements Exception {
 
   final AuthService _authService = AuthService();
 
-  Future<MWUApiResponse<LoginResponseDataModel>?> login(
+  Future<MWUApiResponse<LoginResponseDataModel>> login(
       String username, String password) async {
     try {
       MWUApiResponse<LoginResponseDataModel> response = await _authService
-          .reqLogin(LoginParams(username:username,password:password), LoginResponseDataModel.fromJson);
+          .reqLogin<LoginResponseDataModel, LoginParams>(
+              LoginParams(username:username,password:password),
+              LoginResponseDataModel.fromJson
+      );
 
       if (response.statusCode == 200) {
         return response;
+
       } else {
         throw Exception("Get token failed: ${response.message}");
       }

@@ -13,7 +13,7 @@ class AuthService {
       U loginParams,
       T Function(Map<String, dynamic>) fromJsonT,) async {
     try {
-      Response response = await _httpClient.postRequest<U>(
+      Response response = await _httpClient.postRequest(
         'v1',
         'auth/login',
         params: loginParams,
