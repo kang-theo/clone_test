@@ -1,51 +1,46 @@
-class MWUTexts {
-  static LaunchFlowTexts launchFlowTexts = LaunchFlowTexts();
-}
+import 'package:flutter/material.dart';
 
 class IntroSlideText {
   final String title;
-  final String subTitle;
+  final String description;
 
   IntroSlideText({
     required this.title,
-    required this.subTitle,
+    required this.description,
   });
 }
 
-class LaunchFlowTexts {
-  final List<IntroSlideText> introSlideTexts;
-  final List<String> appTitle;
-  final String introButtonText;
+extension TextGetter on BuildContext {
+  List<IntroSlideText> get introSlideTexts => [
+        IntroSlideText(
+          title: "Welcome to  our female fitness community",
+          description: "We're so excited be a part of your journey to evolve!",
+        ),
+        IntroSlideText(
+          title: "Home & gym workouts",
+          description:
+              "Choose from hundreds of workouts with video demonstrations, exercise swap options and more.",
+        ),
+        IntroSlideText(
+          title: "Experience science-based nutrition",
+          description:
+              "Dietitian-created Meal Guides created for your personal goals and preferences + over 1200 additional delicious recipes!",
+        ),
+        IntroSlideText(
+          title: "Progress tracking and accountability",
+          description:
+              "Set daily tasks and track your hydration, activity, nutrition, sleep and so much more.",
+        ),
+        IntroSlideText(
+          title: "Support and Guidance",
+          description: "We're on this journey with you, every step of the way!",
+        ),
+      ];
 
-  LaunchFlowTexts()
-      : introSlideTexts = [
-          IntroSlideText(
-            title: "Welcome to  our female fitness community",
-            subTitle: "We're so excited be a part of your journey to evolve!",
-          ),
-          IntroSlideText(
-            title: "Home & gym workouts",
-            subTitle:
-                "Choose from hundreds of workouts with video demonstrations, exercise swap options and more.",
-          ),
-          IntroSlideText(
-            title: "Experience science-based nutrition",
-            subTitle:
-                "Dietitian-created Meal Guides created for your personal goals and preferences + over 1200 additional delicious recipes!",
-          ),
-          IntroSlideText(
-            title: "Progress tracking and accountability",
-            subTitle:
-                "Set daily tasks and track your hydration, activity, nutrition, sleep and so much more.",
-          ),
-          IntroSlideText(
-            title: "Support and Guidance",
-            subTitle: "We're on this journey with you, every step of the way!",
-          ),
-        ],
-        appTitle = [
-          'move.',
-          'withus',
-        ].map((str) => str.toUpperCase()).toList(),
-        introButtonText = "Let's get started";
+  List<String> get appTitle => [
+        'move.',
+        'withus',
+      ].map((str) => str.toUpperCase()).toList();
+
+  String get introButtonText => "Let's get started".toUpperCase();
 }

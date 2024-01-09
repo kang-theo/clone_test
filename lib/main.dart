@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mwu/routes/router_delegate.dart';
 import 'package:mwu/routes/router_info_parser.dart';
-import 'package:mwu/theme/theme.dart';
+import 'package:mwu/theme/theme_manager.dart';
 
 void main() {
   runApp(
@@ -33,7 +33,7 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'MWU',
-      theme: AppTheme.theme,
+      theme: mwuTheme,
       routerDelegate: _routerDelegate,
       routeInformationParser: _routerInformationParser,
       debugShowCheckedModeBanner: false,

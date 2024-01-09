@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mwu/constants/paddings.dart';
+import 'package:mwu/theme/theme_manager.dart';
 
 class BaseButton extends StatelessWidget {
   final String buttonText;
@@ -17,7 +18,9 @@ class BaseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonTextStyle = Theme.of(context).textTheme.labelMedium;
+    final buttonTextStyle = context.textTheme.labelMedium?.copyWith(
+      color: textColor,
+    );
 
     return Padding(
       padding: MWUPaddings.all15,
@@ -26,7 +29,7 @@ class BaseButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            foregroundColor: textColor,
+            foregroundColor: backgroundColor,
             backgroundColor: backgroundColor,
             padding: MWUPaddings.vertical15,
             elevation: 0,
@@ -36,7 +39,7 @@ class BaseButton extends StatelessWidget {
             ),
           ),
           child: Text(
-            buttonText.toUpperCase(),
+            buttonText,
             style: buttonTextStyle,
           ),
         ),

@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:mwu/constants/colors.dart';
 import 'package:mwu/constants/images.dart';
 import 'package:mwu/constants/paddings.dart';
 import 'package:mwu/constants/texts.dart';
+import 'package:mwu/theme/color_manager.dart';
+import 'package:mwu/theme/theme_manager.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroSlides extends StatefulWidget {
@@ -18,16 +19,18 @@ class IntroSlides extends StatefulWidget {
 }
 
 class _IntroSlidesState extends State<IntroSlides> {
-  int currentPageIndex = 1000;
+  // set as 1000000 as initial page index
+  // to leave enough buffer for backward swiping
+  int currentPageIndex = 1000000;
   final PageController pageController = PageController(initialPage: 1000);
 
   @override
   Widget build(BuildContext context) {
-    final appTitle = MWUTexts.launchFlowTexts.appTitle;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final appTitleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: primaryColor,
-        );
+    final appTitle = context.appTitle;
+    final primaryColor = context.colorScheme.white;
+    final appTitleStyle = context.textTheme.titleSmall?.copyWith(
+      color: primaryColor,
+    );
     final appTitleBoldStyle = appTitleStyle?.copyWith(
       fontWeight: FontWeight.w700,
     );
@@ -125,7 +128,7 @@ class _IntroSlidesPageViewState extends State<IntroSlidesPageView> {
   }
 
   List<Widget> buildSlideImages(BuildContext context) {
-    return MWUImages.launchFlow.introSlideImages.map(
+    return context.introSlideImages.map(
       (String imageUrl) {
         precacheImage(AssetImage(imageUrl), context);
         return SizedBox(
@@ -151,7 +154,7 @@ class _IntroSlidesPageViewState extends State<IntroSlidesPageView> {
   @override
   Widget build(BuildContext context) {
     final slideImages = buildSlideImages(context);
-    final slideTexts = MWUTexts.launchFlowTexts.introSlideTexts;
+    final slideTexts = context.introSlideTexts;
 
     return Listener(
       onPointerDown: (_) {
@@ -170,7 +173,7 @@ class _IntroSlidesPageViewState extends State<IntroSlidesPageView> {
           final pageCount = index % slideImages.length;
           final slideText = slideTexts[pageCount];
           final title = slideText.title;
-          final subTitle = slideText.subTitle;
+          final subTitle = slideText.description;
           final slideImage = slideImages[pageCount];
 
           return Stack(
@@ -201,8 +204,8 @@ class SlideText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final primaryColor = Theme.of(context).colorScheme.primary;
+    final textTheme = context.textTheme;
+    final primaryColor = context.colorScheme.white;
     final slideTitleStyle = textTheme.headlineMedium?.copyWith(
       color: primaryColor,
     );
@@ -247,7 +250,8 @@ class SlidePageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final slideImages = MWUImages.launchFlow.introSlideImages;
+    final slideImages = context.introSlideImages;
+    final colorScheme = context.colorScheme;
 
     return SmoothPageIndicator(
       controller: pageController,
@@ -264,14 +268,14 @@ class SlidePageIndicator extends StatelessWidget {
           curve: Curves.ease,
         );
       },
-      effect: const ExpandingDotsEffect(
+      effect: ExpandingDotsEffect(
         expansionFactor: 3,
         spacing: 4,
         radius: 16,
         dotWidth: 8,
         dotHeight: 8,
-        dotColor: MWUColors.grey300,
-        activeDotColor: MWUColors.white,
+        dotColor: colorScheme.grey300,
+        activeDotColor: colorScheme.white,
         paintStyle: PaintingStyle.fill,
       ),
     );
