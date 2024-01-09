@@ -2,6 +2,8 @@ import 'package:mwu/api/models/login_response_model/login_response_data_model/lo
 import 'package:mwu/api/models/login_response_model/user_model/user_model.dart';
 import 'package:mwu/api/network/api_models/mwu_api_response_model/mwu_api_response_model.dart';
 import 'package:mwu/api/network/api_services/auth/auth_service.dart';
+import 'package:mwu/api/network/api_services/auth/auth_request_models/register_parameters_model.dart';
+import 'package:mwu/api/network/api_services/auth/auth_request_models/login_parameters_model.dart';
 
 class AuthRepository implements Exception {
 
@@ -11,7 +13,7 @@ class AuthRepository implements Exception {
       String username, String password) async {
     try {
       MWUApiResponse<LoginResponseDataModel> response = await _authService
-          .reqLogin(username, password, LoginResponseDataModel.fromJson);
+          .reqLogin(LoginParams(username:username,password:password), LoginResponseDataModel.fromJson);
 
       if (response.statusCode == 200) {
         return response;

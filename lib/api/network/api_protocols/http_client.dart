@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'dart:convert';
 import 'package:mwu/api/network/api_protocols/dio_client.dart';
 import '../api_models/api_request_methods_model/api_request_methods_model.dart';
 import '../api_models/mwu_api_header_model/mwu_api_header_model.dart';
@@ -18,88 +19,97 @@ class HttpClient {
       String version,
       String path,
       {
-        String? userId,
-        Map<String, dynamic>? params,
+        T? params,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
 
-    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
+    String fullPath = '/api/$version/$path';
 
-    return _request(fullPath, method: HttpMethod.get, params: params, withAuth: withAuth, contentType: contentType);
+    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+
+    return _request(fullPath, method: HttpMethod.get, params: paramsJson, withAuth: withAuth, contentType: contentType);
   }
 
   Future<Response> postRequest<T>(
       String version,
       String path,
       {
-        String? userId,
-        Map<String, dynamic>? params,
+        T? params,
         dynamic data,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
 
-    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
+    String fullPath = '/api/$version/$path';
 
-    return _request(fullPath, method: HttpMethod.post, params: params, data: data, withAuth: withAuth, contentType: contentType);
+    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)):{};
+
+    return _request(fullPath, method: HttpMethod.post, params: paramsJson, data: data, withAuth: withAuth, contentType: contentType);
   }
 
   Future<Response> putRequest<T>(
       String version,
       String path,
       {
-        String? userId,
-        Map<String, dynamic>? params,
+        T? params,
         dynamic data,
         String contentType = 'application/json',
       }) {
 
-    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
+    String fullPath = '/api/$version/$path';
 
-    return _request(fullPath, method: HttpMethod.put, params: params, data: data, contentType: contentType);
+    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+
+    return _request(fullPath, method: HttpMethod.put, params: paramsJson, data: data, contentType: contentType);
   }
 
   Future<Response> deleteRequest<T>(
       String version,
       String path,
       {
-        String? userId,
-        Map<String, dynamic>? params,
+        T? params,
         String contentType = 'application/json',
       }) {
 
-    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
-    return _request(fullPath, method: HttpMethod.delete, params: params, contentType: contentType);
+    String fullPath = '/api/$version/$path';
+
+    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+
+    return _request(fullPath, method: HttpMethod.delete, params: paramsJson, contentType: contentType);
   }
 
   Future<Response> patchRequest<T>(
       String version,
       String path,
       {
-        String? userId,
-        Map<String, dynamic>? params,
+        T? params,
         dynamic data,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
 
-    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
-    return _request(fullPath, method: HttpMethod.patch, params: params, data: data, withAuth: withAuth, contentType: contentType);
+    String fullPath = '/api/$version/$path';
+
+    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+
+    return _request(fullPath, method: HttpMethod.patch, params: paramsJson, data: data, withAuth: withAuth, contentType: contentType);
   }
 
   Future<Response> headRequest<T>(
       String version,
       String path,
       {
-        String? userId,
-        Map<String, dynamic>? params,
+        T? params,
         bool withAuth = true,
         String contentType = 'application/json',
       }) {
 
-    String fullPath = userId != null ? '/api/$version/$path/$userId' : '/api/$version/$path';
-    return _request(fullPath, method: HttpMethod.head, params: params, withAuth: withAuth, contentType: contentType);
+    String fullPath = '/api/$version/$path';
+
+    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)):{};
+
+    return _request(fullPath, method: HttpMethod.head, params: paramsJson, withAuth: withAuth, contentType: contentType);
   }
 
   // private method to send http requests
@@ -107,7 +117,7 @@ class HttpClient {
     String fullPath, {
     HttpMethod method = HttpMethod.get,
     Map<String, dynamic>? params,
-    dynamic data,
+        dynamic data,
     bool withAuth = true,
     String contentType = 'application/json',
   }) async {
@@ -120,9 +130,6 @@ class HttpClient {
     // Initialize options and add headers
     Options options = Options(method: _httpMethodToString(method));
     options.headers = headers;
-
-    // write a method to transfer T to Map<String,dynamic>
-
 
     try {
       // invoke dio request
