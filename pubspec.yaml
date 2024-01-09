@@ -40,6 +40,8 @@ dependencies:
   hooks_riverpod: ^2.4.9
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 
