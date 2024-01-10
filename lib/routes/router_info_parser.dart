@@ -15,11 +15,11 @@ class MWURouterInformationParser extends RouteInformationParser<MWURoutePath> {
   }
 
   @override
-  RouteInformation restoreRouteInformation(MWURoutePath path) {
-    switch (path.name) {
+  RouteInformation restoreRouteInformation(MWURoutePath configuration) {
+    switch (configuration.name) {
       case "example":
-        return const RouteInformation(location: '/');
+        return RouteInformation(uri: Uri.parse('/'));
     }
-    return const RouteInformation(location: '/');
+    return RouteInformation(uri: Uri.parse('/'));
   }
 }

@@ -5,20 +5,21 @@ import 'package:mwu/routes/router_info_parser.dart';
 
 void main() {
   late MWURouterInformationParser parser;
+  group("RouterInfoParser Test", () {
+    setUpAll(() => {parser = MWURouterInformationParser()});
 
-  setUpAll(() => {parser = MWURouterInformationParser()});
+    test('MWURouterInformationParser parseRouteInformation test', () async {
+      final routeInformation = RouteInformation(uri: Uri.parse('/another'));
+      final parsedPath = await parser.parseRouteInformation(routeInformation);
 
-  test('MWURouterInformationParser parseRouteInformation test', () async {
-    const routeInformation = RouteInformation(location: '/another');
-    final parsedPath = await parser.parseRouteInformation(routeInformation);
+      expect(parsedPath.name, equals('another'));
+    });
 
-    expect(parsedPath.name, equals('another'));
-  });
+    test('MWURouterInformationParser restoreRouteInformation test', () {
+      final path = MWURoutePath.example();
+      final restoredInformation = parser.restoreRouteInformation(path);
 
-  test('MWURouterInformationParser restoreRouteInformation test', () {
-    final path = MWURoutePath.example();
-    final restoredInformation = parser.restoreRouteInformation(path);
-
-    expect(restoredInformation.location, equals('/'));
+      expect(restoredInformation.uri.toString(), equals('/'));
+    });
   });
 }
