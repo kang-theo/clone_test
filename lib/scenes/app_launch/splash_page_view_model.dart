@@ -50,22 +50,27 @@ class SplashPageProvider extends StateNotifier<SplashPageViewModel> {
     state.autoLoopTimer = Timer.periodic(
       const Duration(seconds: 3),
       (_) {
-        final currentPageIndex = ref.watch(splashPageProvider).currentPageIndex;
-        final splashPageNotifier = ref.read(splashPageProvider.notifier);
+        final BuildContext(:introSlideImages) = context;
         final newPageIndex =
-            currentPageIndex + 1 == context.introSlideImages.length
+            state.currentPageIndex + 1 == introSlideImages.length
                 ? 0
-                : currentPageIndex + 1;
-
-        splashPageNotifier
-          ..setPageIndex(newPageIndex)
-          ..swipeToPage(newPageIndex);
+                : state.currentPageIndex + 1;
+        setPageIndex(newPageIndex);
+        swipeToPage(newPageIndex);
       },
     );
   }
 
   void stopLoopTimer() {
     state.autoLoopTimer?.cancel();
+    state.autoLoopTimer = null;
+  }
+
+  void cacheSlideImages(BuildContext context) {
+    final BuildContext(:introSlideImages) = context;
+    for (final imageUrl in introSlideImages) {
+      precacheImage(AssetImage(imageUrl), context);
+    }
   }
 }
 

@@ -21,22 +21,23 @@ void main() {
       await tester.pumpAndSettle();
       await binding.takeScreenshot('$screenshotFolder/startup');
 
-      final BuildContext context = getContext(tester);
-      final appTitle = context.appTitle;
-      final move = appTitle[0];
-      final withUs = appTitle[1];
-      final buttonText = context.introButtonText;
-      final firstPageTitle = context.introSlideTexts[0].title;
-      final firstPageDescription = context.introSlideTexts[0].description;
-      final firstImageUrl = context.introSlideImages[0];
+      final BuildContext(
+        :appTitle,
+        :introButtonText,
+        :introSlideImages,
+        :introSlideTexts,
+      ) = getContext(tester);
+      final [move, withUs] = appTitle;
+      final [IntroSlideText(:title, :description), ..._] = introSlideTexts;
+      final [imageUrl, ..._] = introSlideImages;
 
       expect(find.text(move), findsOneWidget);
       expect(find.text(withUs), findsOneWidget);
-      expect(find.text(buttonText), findsOneWidget);
-      expect(find.text(firstPageTitle), findsOneWidget);
-      expect(find.text(firstPageDescription), findsOneWidget);
+      expect(find.text(introButtonText), findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+      expect(find.text(description), findsOneWidget);
       expect(
-        findImageByUrl(firstImageUrl),
+        findImageByUrl(imageUrl),
         findsOneWidget,
       );
     });
@@ -53,29 +54,30 @@ void main() {
         await tester.pumpAndSettle();
         await binding.takeScreenshot('$screenshotFolder/after_swipe');
 
-        final BuildContext context = getContext(tester);
+        final BuildContext(
+          :appTitle,
+          :introButtonText,
+          :introSlideImages,
+          :introSlideTexts,
+        ) = getContext(tester);
 
-        final appTitle = context.appTitle;
-        final move = appTitle[0];
-        final withUs = appTitle[1];
-        final buttonText = context.introButtonText;
-        final secondPageTitle = context.introSlideTexts[1].title;
-        final secondPageDescription = context.introSlideTexts[1].description;
-        final secondImageUrl = context.introSlideImages[1];
+        final [move, withUs] = appTitle;
+        final [firstImageUrl, secondImageUrl, ..._] = introSlideImages;
+        final [firstSlideText, secondSlideText, ..._] = introSlideTexts;
+        final IntroSlideText(:title, :description) = secondSlideText;
 
         expect(find.text(move), findsOneWidget);
         expect(find.text(withUs), findsOneWidget);
-        expect(find.text(buttonText), findsOneWidget);
-        expect(find.text(secondPageTitle), findsOneWidget);
-        expect(find.text(secondPageDescription), findsOneWidget);
+        expect(find.text(introButtonText), findsOneWidget);
+        expect(find.text(title), findsOneWidget);
+        expect(find.text(description), findsOneWidget);
         expect(
           findImageByUrl(secondImageUrl),
           findsOneWidget,
         );
 
-        final firstPageTitle = context.introSlideTexts[0].title;
-        final firstPageDescription = context.introSlideTexts[0].description;
-        final firstImageUrl = context.introSlideImages[0];
+        final firstPageTitle = firstSlideText.title;
+        final firstPageDescription = firstSlideText.description;
 
         expect(find.text(firstPageTitle), findsNothing);
         expect(find.text(firstPageDescription), findsNothing);
@@ -102,17 +104,18 @@ void main() {
       (WidgetTester tester) async {
         await setUpPageTester(tester, const SplashPageView());
         final pageView = tester.widget<PageView>(find.byType(PageView));
-        final BuildContext context = getContext(tester);
-        final pageCount = context.introSlideImages.length;
+
+        final BuildContext(:introSlideImages) = getContext(tester);
+        final length = introSlideImages.length;
 
         expect(pageView.physics, isA<ClampingScrollPhysics>());
 
-        for (var i = 0; i < pageCount; i++) {
+        for (int i = 0; i < length; i++) {
           await tester.drag(find.byType(PageView), const Offset(-400.0, 0.0));
           await tester.pump();
         }
 
-        expect(pageView.controller.page, pageCount - 1);
+        expect(pageView.controller.page, length - 1);
       },
     );
 
@@ -121,15 +124,16 @@ void main() {
       (WidgetTester tester) async {
         await setUpPageTester(tester, const SplashPageView());
 
-        final pageView = tester.widget<PageView>(find.byType(PageView));
-        final BuildContext context = getContext(tester);
+        final BuildContext(:introSlideImages) = getContext(tester);
 
-        for (int i = 0; i < context.introSlideImages.length; i++) {
+        for (int i = 0; i < introSlideImages.length; i++) {
           await tester.pump(const Duration(seconds: 3));
           await tester.pumpAndSettle();
         }
 
-        expect(pageView.controller.page, 0);
+        final PageController(:page) =
+            tester.widget<PageView>(find.byType(PageView)).controller;
+        expect(page, 0);
       },
     );
   });

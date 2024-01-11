@@ -32,33 +32,45 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    for (String imageUrl in context.introSlideImages) {
-      precacheImage(AssetImage(imageUrl), context);
-    }
+    final SplashPageProvider(:cacheSlideImages) = pageNotifier;
+    cacheSlideImages(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final appTitle = context.appTitle;
-    final buttonText = context.introButtonText;
+    final BuildContext(
+      :appTitle,
+      :introSlideTexts,
+      :colorScheme,
+      :textTheme,
+      :introButtonText,
+      :introSlideImages,
+    ) = context;
 
-    final colorScheme = context.colorScheme;
-    final primaryColor = colorScheme.white;
-    final textColor = colorScheme.black;
-    final dotColor = colorScheme.grey300;
+    final pageCount = introSlideImages.length;
+    final [move, withUs] = appTitle;
 
-    final appTitleStyle = context.textTheme.titleSmall?.copyWith(
-      color: primaryColor,
+    final ColorScheme(
+      :white,
+      :black,
+      :grey300,
+    ) = colorScheme;
+
+    final appTitleStyle = textTheme.titleSmall?.copyWith(
+      color: white,
     );
     final appTitleBoldStyle = appTitleStyle?.copyWith(
       fontWeight: FontWeight.w700,
     );
 
-    final pageController = ref.watch(splashPageProvider).pageController;
+    final SplashPageProvider(
+      :startLoopTimer,
+      :stopLoopTimer,
+      :setPageIndex,
+      :swipeToPage,
+    ) = pageNotifier;
 
-    final slideTexts = context.introSlideTexts;
-    final slideImages = context.introSlideImages;
-    final pageCount = slideImages.length;
+    final SplashPageViewModel(:pageController) = ref.watch(splashPageProvider);
 
     return Scaffold(
       body: Stack(
@@ -67,10 +79,10 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
             children: [
               Listener(
                 onPointerDown: (_) {
-                  pageNotifier.stopLoopTimer();
+                  stopLoopTimer();
                 },
                 onPointerUp: (_) {
-                  pageNotifier.startLoopTimer(context, ref);
+                  startLoopTimer(context, ref);
                 },
                 child: PageView.builder(
                   itemCount: pageCount,
@@ -78,18 +90,17 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
                   controller: pageController,
                   scrollDirection: Axis.horizontal,
                   onPageChanged: (index) {
-                    pageNotifier.setPageIndex(index);
+                    setPageIndex(index);
                   },
                   itemBuilder: (context, index) {
-                    final slideText = slideTexts[index];
-                    final title = slideText.title;
-                    final subTitle = slideText.description;
-                    final slideImage = slideImages[index];
+                    final IntroSlideText(:title, :description) =
+                        introSlideTexts[index];
+                    final slideImage = introSlideImages[index];
 
                     return SlidePage(
                       imageUrl: slideImage,
                       title: title,
-                      subTitle: subTitle,
+                      subTitle: description,
                     );
                   },
                 ),
@@ -104,11 +115,11 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          appTitle[0],
+                          move,
                           style: appTitleBoldStyle,
                         ),
                         Text(
-                          appTitle[1],
+                          withUs,
                           style: appTitleStyle,
                         ),
                       ],
@@ -121,7 +132,7 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
                       count: pageCount,
                       axisDirection: Axis.horizontal,
                       onDotClicked: (i) async {
-                        pageNotifier.swipeToPage(i);
+                        swipeToPage(i);
                       },
                       effect: ExpandingDotsEffect(
                         expansionFactor: 3,
@@ -129,8 +140,8 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
                         radius: 16,
                         dotWidth: 8,
                         dotHeight: 8,
-                        dotColor: dotColor,
-                        activeDotColor: primaryColor,
+                        dotColor: grey300,
+                        activeDotColor: white,
                         paintStyle: PaintingStyle.fill,
                       ),
                     ),
@@ -144,9 +155,9 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
             child: Padding(
               padding: MWUPaddings.bottom15,
               child: BaseButton(
-                backgroundColor: colorScheme.background,
-                textColor: textColor,
-                buttonText: buttonText,
+                backgroundColor: white,
+                textColor: black,
+                buttonText: introButtonText,
                 onPressed: () => {},
               ),
             ),

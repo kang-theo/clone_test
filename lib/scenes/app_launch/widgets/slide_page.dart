@@ -17,8 +17,11 @@ class SlidePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = context.textTheme;
-    final primaryColor = context.colorScheme.white;
+    final BuildContext(
+      :textTheme,
+      :colorScheme,
+    ) = context;
+    final primaryColor = colorScheme.white;
     final slideTitleStyle = textTheme.headlineMedium?.copyWith(
       color: primaryColor,
     );
