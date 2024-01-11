@@ -17,7 +17,6 @@ void main() {
         (WidgetTester tester) async {
       await setUpPageTester(tester, const SplashPageView());
 
-      await tester.pumpAndSettle();
       await binding.convertFlutterSurfaceToImage();
       await tester.pumpAndSettle();
       await binding.takeScreenshot('$screenshotFolder/startup');
@@ -47,7 +46,6 @@ void main() {
       (WidgetTester tester) async {
         await setUpPageTester(tester, const SplashPageView());
 
-        await tester.pumpAndSettle();
         await tester.drag(find.byType(PageView), const Offset(-400.0, 0.0));
         await tester.pump();
 
@@ -85,6 +83,53 @@ void main() {
           findImageByUrl(firstImageUrl),
           findsNothing,
         );
+      },
+    );
+
+    testWidgets(
+      "Page view should be able to scroll automatically",
+      (WidgetTester tester) async {
+        await setUpPageTester(tester, const SplashPageView());
+        await tester.pump(const Duration(seconds: 4));
+        await tester.pumpAndSettle();
+        final pageView = tester.widget<PageView>(find.byType(PageView));
+        expect(pageView.controller.page, 1);
+      },
+    );
+
+    testWidgets(
+      "PageView should have ClampingScrollPhysics and won't allow user to scroll once it reaches the last page",
+      (WidgetTester tester) async {
+        await setUpPageTester(tester, const SplashPageView());
+        final pageView = tester.widget<PageView>(find.byType(PageView));
+        final BuildContext context = getContext(tester);
+        final pageCount = context.introSlideImages.length;
+
+        expect(pageView.physics, isA<ClampingScrollPhysics>());
+
+        for (var i = 0; i < pageCount; i++) {
+          await tester.drag(find.byType(PageView), const Offset(-400.0, 0.0));
+          await tester.pump();
+        }
+
+        expect(pageView.controller.page, pageCount - 1);
+      },
+    );
+
+    testWidgets(
+      "PageView auto scroll should scroll back to the first page when there are no more pages on the right",
+      (WidgetTester tester) async {
+        await setUpPageTester(tester, const SplashPageView());
+
+        final pageView = tester.widget<PageView>(find.byType(PageView));
+        final BuildContext context = getContext(tester);
+
+        for (int i = 0; i < context.introSlideImages.length; i++) {
+          await tester.pump(const Duration(seconds: 3));
+          await tester.pumpAndSettle();
+        }
+
+        expect(pageView.controller.page, 0);
       },
     );
   });

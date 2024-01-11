@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mwu/theme/theme_manager.dart';
 
 Future<void> setUpPageTester(WidgetTester tester, Widget widget) async {
   await tester.pumpWidget(
-    MaterialApp(
-      home: widget,
-      theme: mwuTheme,
-      debugShowCheckedModeBanner: false,
+    ProviderScope(
+      child: MaterialApp(
+        home: widget,
+        theme: mwuTheme,
+        debugShowCheckedModeBanner: false,
+      ),
     ),
   );
+  await tester.pumpAndSettle();
 }
 
 BuildContext getContext(WidgetTester tester) {
