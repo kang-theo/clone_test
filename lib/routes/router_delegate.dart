@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mwu/routes/route_path.dart';
-import 'package:mwu/scenes/app_launch/views/splash_page_view.dart';
+import 'package:mwu/scenes/app_launch/splash_page_view.dart';
 
 class MWURouterDelegate extends RouterDelegate<MWURoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<MWURoutePath> {
@@ -20,7 +20,7 @@ class MWURouterDelegate extends RouterDelegate<MWURoutePath>
   final List<Page> _pages = <Page>[
     const MaterialPage(
       name: "splash",
-      child: SplashPage(),
+      child: SplashPageView(),
     ),
   ];
 

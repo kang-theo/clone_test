@@ -12,30 +12,19 @@ void main() {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
-
   @override
-  MyAppState createState() => MyAppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MWURouterDelegate routerDelegate = MWURouterDelegate.instance;
+    final MWURouterInformationParser routerInformationParser =
+        MWURouterInformationParser();
 
-class MyAppState extends State<MyApp> {
-  final MWURouterDelegate _routerDelegate = MWURouterDelegate.instance;
-  final MWURouterInformationParser _routerInformationParser =
-      MWURouterInformationParser();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'MWU',
       theme: mwuTheme,
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routerInformationParser,
+      routerDelegate: routerDelegate,
+      routeInformationParser: routerInformationParser,
       debugShowCheckedModeBanner: false,
     );
   }

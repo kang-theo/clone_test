@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mwu/constants/images.dart';
 import 'package:mwu/constants/texts.dart';
-import 'package:mwu/scenes/app_launch/views/splash_page_view.dart';
+import 'package:mwu/scenes/app_launch/splash_page_view.dart';
 
 import 'utils/index.dart';
 
@@ -15,7 +15,7 @@ void main() {
     testWidgets(
         "Splash Page should render texts and image for first slide on startup",
         (WidgetTester tester) async {
-      await setUpPageTester(tester, const SplashPage());
+      await setUpPageTester(tester, const SplashPageView());
 
       await tester.pumpAndSettle();
       await binding.convertFlutterSurfaceToImage();
@@ -45,7 +45,7 @@ void main() {
     testWidgets(
       "Page view should render texts and image for second slide after swipe",
       (WidgetTester tester) async {
-        await setUpPageTester(tester, const SplashPage());
+        await setUpPageTester(tester, const SplashPageView());
 
         await tester.pumpAndSettle();
         await tester.drag(find.byType(PageView), const Offset(-400.0, 0.0));
