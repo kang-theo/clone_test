@@ -13,20 +13,24 @@ class MWUApiResponse<T> with _$MWUApiResponse<T> {
     T? data,
     @JsonKey(name: 'http_status') required int statusCode,
     @Default('') String message,
-    Map<String, List<String>>? errors,
+    Map<String, List<dynamic>>? errors,
     @JsonKey(name: 'error_code') String? errorCode,
     MWUApiResponseMeta? meta,
   }) = _MWUApiResponse<T>;
 
   factory MWUApiResponse.fromDioResponse(
     Response response,
-    T Function(Map<String, dynamic> json) fromJsonT,
+    T Function(Map<String, dynamic> json)? fromJsonT,
   ) {
     final responseData =
         response.data is String ? json.decode(response.data) : response.data;
 
+    T? data;
+    if (responseData != null && responseData.containsKey('data') && fromJsonT != null) {
+      data = fromJsonT(responseData['data']);
+    }
     return MWUApiResponse<T>(
-      data: fromJsonT(responseData['data']),
+      data: data,
       statusCode: response.statusCode ?? 0,
       message: response.statusMessage ?? '',
       meta: MWUApiResponseMeta.fromJson(response.data['meta'] ?? {}),
@@ -36,7 +40,7 @@ class MWUApiResponse<T> with _$MWUApiResponse<T> {
   factory MWUApiResponse.fromException(dynamic e) {
     int statusCode = 500;
     String? message;
-    Map<String, List<String>>? errors;
+    Map<String, List<dynamic>>? errors;
     String? errorCode;
 
     if (e is DioException) {
@@ -46,7 +50,7 @@ class MWUApiResponse<T> with _$MWUApiResponse<T> {
       errorCode = e.response?.data['error_code'];
 
       if (e.response?.data['errors'] != null) {
-        errors = Map<String, List<String>>.from(e.response!.data['errors']);
+        errors = Map<String, List<dynamic>>.from(e.response!.data['errors']);
       }
     } else {
       // Other exception

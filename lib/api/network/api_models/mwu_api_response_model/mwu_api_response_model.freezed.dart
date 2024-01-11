@@ -20,7 +20,7 @@ mixin _$MWUApiResponse<T> {
   @JsonKey(name: 'http_status')
   int get statusCode => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
-  Map<String, List<String>>? get errors => throw _privateConstructorUsedError;
+  Map<String, List<dynamic>>? get errors => throw _privateConstructorUsedError;
   @JsonKey(name: 'error_code')
   String? get errorCode => throw _privateConstructorUsedError;
   MWUApiResponseMeta? get meta => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $MWUApiResponseCopyWith<T, $Res> {
       {T? data,
       @JsonKey(name: 'http_status') int statusCode,
       String message,
-      Map<String, List<String>>? errors,
+      Map<String, List<dynamic>>? errors,
       @JsonKey(name: 'error_code') String? errorCode,
       MWUApiResponseMeta? meta});
 
@@ -83,7 +83,7 @@ class _$MWUApiResponseCopyWithImpl<T, $Res, $Val extends MWUApiResponse<T>>
       errors: freezed == errors
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, List<String>>?,
+              as Map<String, List<dynamic>>?,
       errorCode: freezed == errorCode
           ? _value.errorCode
           : errorCode // ignore: cast_nullable_to_non_nullable
@@ -120,7 +120,7 @@ abstract class _$$MWUApiResponseImplCopyWith<T, $Res>
       {T? data,
       @JsonKey(name: 'http_status') int statusCode,
       String message,
-      Map<String, List<String>>? errors,
+      Map<String, List<dynamic>>? errors,
       @JsonKey(name: 'error_code') String? errorCode,
       MWUApiResponseMeta? meta});
 
@@ -162,7 +162,7 @@ class __$$MWUApiResponseImplCopyWithImpl<T, $Res>
       errors: freezed == errors
           ? _value._errors
           : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, List<String>>?,
+              as Map<String, List<dynamic>>?,
       errorCode: freezed == errorCode
           ? _value.errorCode
           : errorCode // ignore: cast_nullable_to_non_nullable
@@ -182,7 +182,7 @@ class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
       {this.data,
       @JsonKey(name: 'http_status') required this.statusCode,
       this.message = '',
-      final Map<String, List<String>>? errors,
+      final Map<String, List<dynamic>>? errors,
       @JsonKey(name: 'error_code') this.errorCode,
       this.meta})
       : _errors = errors;
@@ -195,9 +195,9 @@ class _$MWUApiResponseImpl<T> implements _MWUApiResponse<T> {
   @override
   @JsonKey()
   final String message;
-  final Map<String, List<String>>? _errors;
+  final Map<String, List<dynamic>>? _errors;
   @override
-  Map<String, List<String>>? get errors {
+  Map<String, List<dynamic>>? get errors {
     final value = _errors;
     if (value == null) return null;
     if (_errors is EqualUnmodifiableMapView) return _errors;
@@ -254,7 +254,7 @@ abstract class _MWUApiResponse<T> implements MWUApiResponse<T> {
       {final T? data,
       @JsonKey(name: 'http_status') required final int statusCode,
       final String message,
-      final Map<String, List<String>>? errors,
+      final Map<String, List<dynamic>>? errors,
       @JsonKey(name: 'error_code') final String? errorCode,
       final MWUApiResponseMeta? meta}) = _$MWUApiResponseImpl<T>;
 
@@ -266,7 +266,7 @@ abstract class _MWUApiResponse<T> implements MWUApiResponse<T> {
   @override
   String get message;
   @override
-  Map<String, List<String>>? get errors;
+  Map<String, List<dynamic>>? get errors;
   @override
   @JsonKey(name: 'error_code')
   String? get errorCode;

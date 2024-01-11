@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'package:mwu/api/network/api_protocols/dio_client.dart';
-import '../api_models/api_request_methods_model/api_request_methods_model.dart';
+import 'request_methods.dart';
 import '../api_models/mwu_api_header_model/mwu_api_header_model.dart';
+import '../api_models/mwu_api_request_parameter_model/mwu_api_request_parameter_model.dart';
+import '../api_models/mwu_api_response_model/mwu_api_response_model.dart';
 
 class HttpClient {
   String? _accessToken;
@@ -15,112 +17,180 @@ class HttpClient {
   }
 
   // methods to send http requests can be invoked by external classes
-  Future<Response> getRequest<T>(
-      String version,
+  Future<MWUApiResponse<T>> getRequest<T>(
       String path,
-      {
-        T? params,
-        bool withAuth = true,
-        String contentType = 'application/json',
-      }) {
+      MWUApiParameter params,{
+      T Function(Map<String, dynamic>)? fromJsonT
+      }) async {
+    String fullPath = '/api/${params.version}/$path';
 
-    String fullPath = '/api/$version/$path';
+    Map<String, dynamic> queryParamsJson = params.queryParameters != null
+        ? jsonDecode(jsonEncode(params.queryParameters))
+        : {};
 
-    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+    try {
+      Response response = await _request(
+          fullPath,
+          method: HttpMethod.get,
+          params: queryParamsJson,
+          contentType: params.contentType
+      );
 
-    return _request(fullPath, method: HttpMethod.get, params: paramsJson, withAuth: withAuth, contentType: contentType);
+      return MWUApiResponse<T>.fromDioResponse(response, fromJsonT);
+    } catch (e) {
+      return MWUApiResponse<T>.fromException(e);
+    }
   }
 
-  Future<Response> postRequest<T>(
-      String version,
+  Future<MWUApiResponse<T>> postRequest<T>(
       String path,
-      {
-        T? params,
-        dynamic data,
-        bool withAuth = true,
-        String contentType = 'application/json',
-      }) {
+      MWUApiParameter params,{
+        T Function(Map<String, dynamic>)? fromJsonT
+      }) async {
+    // Get full path
+    String fullPath = '/api/${params.version}/$path';
 
-    String fullPath = '/api/$version/$path';
+    // Get query parameters
+    Map<String, dynamic> queryParamsJson = params.queryParameters != null
+        ? jsonDecode(jsonEncode(params.queryParameters))
+        : {};
 
-    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)):{};
+    // Get data parameters
+    dynamic dataParamsJson = params.dataParameters != null
+        ? jsonDecode(jsonEncode(params.dataParameters))
+        : null;
 
-    return _request(fullPath, method: HttpMethod.post, params: paramsJson, data: data, withAuth: withAuth, contentType: contentType);
+    try {
+      Response response = await _request(
+          fullPath,
+          method: HttpMethod.post,
+          params: queryParamsJson,
+          data: dataParamsJson,
+          withAuth: params.withAuth??true,
+          contentType: params.contentType
+      );
+
+      return MWUApiResponse<T>.fromDioResponse(response, fromJsonT);
+    } catch (e) {
+      return MWUApiResponse<T>.fromException(e);
+    }
   }
 
-  Future<Response> putRequest<T>(
-      String version,
+  Future<MWUApiResponse<T>> putRequest<T>(
       String path,
-      {
-        T? params,
-        dynamic data,
-        String contentType = 'application/json',
-      }) {
+      MWUApiParameter params,{
+        T Function(Map<String, dynamic>)? fromJsonT
+      }) async {
+    String fullPath = '/api/${params.version}/$path';
 
-    String fullPath = '/api/$version/$path';
+    // Get query parameters
+    Map<String, dynamic> queryParamsJson = params.queryParameters != null
+        ? jsonDecode(jsonEncode(params.queryParameters))
+        : {};
 
-    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+    // Get data parameters
+    dynamic dataParamsJson = params.dataParameters != null
+        ? jsonDecode(jsonEncode(params.dataParameters))
+        : null;
 
-    return _request(fullPath, method: HttpMethod.put, params: paramsJson, data: data, contentType: contentType);
+    try {
+      Response response = await _request(
+          fullPath,
+          method: HttpMethod.put,
+          params: queryParamsJson,
+          data: dataParamsJson,
+          contentType: params.contentType
+      );
+
+      return MWUApiResponse<T>.fromDioResponse(response, fromJsonT);
+    } catch (e) {
+
+      return MWUApiResponse<T>.fromException(e);
+    }
   }
 
-  Future<Response> deleteRequest<T>(
-      String version,
+  Future<MWUApiResponse<T>> deleteRequest<T>(
       String path,
-      {
-        T? params,
-        String contentType = 'application/json',
-      }) {
+      MWUApiParameter params,{
+        T Function(Map<String, dynamic>)? fromJsonT
+      }) async {
+    String fullPath = '/api/${params.version}/$path';
 
-    String fullPath = '/api/$version/$path';
+    // Get query parameters
+    Map<String, dynamic> queryParamsJson = params.queryParameters != null
+        ? jsonDecode(jsonEncode(params.queryParameters))
+        : {};
 
-    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+    // Get data parameters
+    dynamic dataParamsJson = params.dataParameters != null
+        ? jsonDecode(jsonEncode(params.dataParameters))
+        : null;
 
-    return _request(fullPath, method: HttpMethod.delete, params: paramsJson, contentType: contentType);
+    try {
+      Response response = await _request(
+          fullPath,
+          method: HttpMethod.delete,
+          params: queryParamsJson,
+          data: dataParamsJson,
+          contentType: params.contentType
+      );
+
+      return MWUApiResponse<T>.fromDioResponse(response, fromJsonT);
+    } catch (e) {
+      return MWUApiResponse<T>.fromException(e);
+    }
   }
 
-  Future<Response> patchRequest<T>(
-      String version,
+
+  Future<MWUApiResponse<T>> patchRequest<T>(
       String path,
-      {
-        T? params,
-        dynamic data,
-        bool withAuth = true,
-        String contentType = 'application/json',
-      }) {
+      MWUApiParameter params,{
+        T Function(Map<String, dynamic>)? fromJsonT
+      }) async {
+    String fullPath = '/api/${params.version}/$path';
 
-    String fullPath = '/api/$version/$path';
+    // Get query parameters
+    Map<String, dynamic> queryParamsJson = params.queryParameters != null
+        ? jsonDecode(jsonEncode(params.queryParameters))
+        : {};
 
-    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)): {};
+    // Get data parameters
+    dynamic dataParamsJson = params.dataParameters != null
+        ? jsonDecode(jsonEncode(params.dataParameters))
+        : null;
 
-    return _request(fullPath, method: HttpMethod.patch, params: paramsJson, data: data, withAuth: withAuth, contentType: contentType);
-  }
+    try {
+      Response response = await _request(
+          fullPath,
+          method: HttpMethod.put,
+          params: queryParamsJson,
+          data: dataParamsJson,
+          contentType: params.contentType
+      );
 
-  Future<Response> headRequest<T>(
-      String version,
-      String path,
-      {
-        T? params,
-        bool withAuth = true,
-        String contentType = 'application/json',
-      }) {
-
-    String fullPath = '/api/$version/$path';
-
-    Map<String, dynamic> paramsJson = params!=null? jsonDecode(jsonEncode(params)):{};
-
-    return _request(fullPath, method: HttpMethod.head, params: paramsJson, withAuth: withAuth, contentType: contentType);
+      return MWUApiResponse<T>.fromDioResponse(response, fromJsonT);
+    } catch (e) {
+      return MWUApiResponse<T>.fromException(e);
+    }
   }
 
   // private method to send http requests
-  Future<Response> _request<T>(
-    String fullPath, {
-    HttpMethod method = HttpMethod.get,
-    Map<String, dynamic>? params,
-        dynamic data,
-    bool withAuth = true,
+  Future<Response> _request(
+
+    String fullPath, // Positional Parameters: mandatory with order
+      // Named Parameters: optional and could be out of order
+    {
+      // for header
+      HttpMethod method = HttpMethod.get,
+    bool withAuth = true, // decide access token
     String contentType = 'application/json',
-  }) async {
+    // parameters
+    Map<String, dynamic>? params, // query params
+    dynamic data, // body params
+    }
+
+  ) async {
+
     // Get dynamic headers
     Map<String, String> headers =
         await _getDynamicHeaders(withAuth, contentType);
@@ -162,6 +232,11 @@ class HttpClient {
     return headerModel.toMap( withAuth: withAuth);
   }
 
+  // helper to convert http method to string
+  String _httpMethodToString(HttpMethod method) {
+    return method.toString().split('.').last.toUpperCase();
+  }
+
   void refreshAccessToken() {
     // TODO: Implement the logic to refresh the access token
     // For now, hardcoding a new token
@@ -172,11 +247,6 @@ class HttpClient {
     // TODO: Implement the logic to revoke the access token
     // For now, just setting it to null
     _accessToken = null;
-  }
-
-  // helper to convert http method to string
-  String _httpMethodToString(HttpMethod method) {
-    return method.toString().split('.').last.toUpperCase();
   }
 
 }

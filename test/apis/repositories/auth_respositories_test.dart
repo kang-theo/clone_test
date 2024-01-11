@@ -1,30 +1,33 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mwu/api/models/login_response_model/login_response_data_model/login_response_data_model.dart';
 import 'package:mwu/api/models/login_response_model/user_model/user_model.dart';
-import 'package:mwu/api/network/api_services/auth/auth_service.dart';
 import 'package:mwu/api/repositories/auth/auth.dart';
 
+
+
 void main() {
+  late AuthRepository authRepository;
+
+  setUp(() {
+    authRepository = AuthRepository();
+  });
+
   group('AuthRepository Test', () {
-    late AuthRepository authRepository;
 
-    setUp(() {
-      authRepository = AuthRepository();
-    });
-
-    test('Successful login', () async {
+    // login
+    test('Successfully login', () async {
       var response = await authRepository.login(
         "qingyan.yang@pixelforce.com.au",
         "1234567yY.",
       );
-      expect(response!.statusCode, 200);
-      expect(response.data, isA<LoginResponseDataModel>());
+      expect(response, isA<LoginResponseDataModel>());
     });
 
-    test('Get user info', () async {
-      var response = await authRepository.getUserInfo();
-      expect(response!.statusCode, 200);
-      expect(response.data, isA<UserModel>());
+    // getUser
+    test('Successfully get user', () async {
+      var response = await authRepository.getUser();
+      expect(response, isA<UserModel>());
     });
+
   });
 }
