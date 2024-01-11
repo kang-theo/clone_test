@@ -7,7 +7,7 @@ import 'package:mwu/constants/images.dart';
 class SplashPageViewModel {
   final int currentPageIndex;
   final PageController pageController;
-  Timer autoLoopTimer;
+  Timer? autoLoopTimer;
 
   SplashPageViewModel({
     required this.currentPageIndex,
@@ -22,10 +22,7 @@ class SplashPageProvider extends StateNotifier<SplashPageViewModel> {
           SplashPageViewModel(
             currentPageIndex: 0,
             pageController: PageController(initialPage: 0),
-            autoLoopTimer: Timer.periodic(
-              const Duration(seconds: 3),
-              (_) {},
-            ),
+            autoLoopTimer: null,
           ),
         );
 
@@ -60,14 +57,15 @@ class SplashPageProvider extends StateNotifier<SplashPageViewModel> {
                 ? 0
                 : currentPageIndex + 1;
 
-        splashPageNotifier.setPageIndex(newPageIndex);
-        splashPageNotifier.swipeToPage(newPageIndex);
+        splashPageNotifier
+          ..setPageIndex(newPageIndex)
+          ..swipeToPage(newPageIndex);
       },
     );
   }
 
   void stopLoopTimer() {
-    state.autoLoopTimer.cancel();
+    state.autoLoopTimer?.cancel();
   }
 }
 

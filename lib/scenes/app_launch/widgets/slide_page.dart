@@ -6,12 +6,12 @@ import 'package:mwu/theme/theme_manager.dart';
 class SlidePage extends StatelessWidget {
   const SlidePage({
     super.key,
-    required this.slideImage,
+    required this.imageUrl,
     required this.title,
     required this.subTitle,
   });
 
-  final Widget slideImage;
+  final String imageUrl;
   final String title;
   final String subTitle;
 
@@ -29,7 +29,22 @@ class SlidePage extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        slideImage,
+        SizedBox(
+          height: double.infinity,
+          child: ClipRRect(
+            child: Transform(
+              transform: Matrix4.identity()..scale(1.15),
+              alignment: const FractionalOffset(
+                0.5,
+                0.75,
+              ),
+              child: Image.asset(
+                imageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
         Padding(
           padding: MWUPaddings.horizontal50,
           child: Column(

@@ -5,7 +5,7 @@ import 'package:mwu/constants/images.dart';
 import 'package:mwu/constants/paddings.dart';
 import 'package:mwu/constants/texts.dart';
 import 'package:mwu/scenes/app_launch/splash_page_view_model.dart';
-import 'package:mwu/scenes/app_launch/widgets/slide.dart';
+import 'package:mwu/scenes/app_launch/widgets/slide_page.dart';
 import 'package:mwu/theme/color_manager.dart';
 import 'package:mwu/theme/theme_manager.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -20,37 +20,25 @@ class SplashPageView extends ConsumerStatefulWidget {
 }
 
 class _SplashPageState extends ConsumerState<SplashPageView> {
+  late SplashPageProvider pageNotifier;
+
   @override
   void initState() {
     super.initState();
-    final pageNotifier = ref.read(splashPageProvider.notifier);
-    pageNotifier.startLoopTimer(context, ref);
+    pageNotifier = ref.read(splashPageProvider.notifier)
+      ..startLoopTimer(context, ref);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    for (String imageUrl in context.introSlideImages) {
+      precacheImage(AssetImage(imageUrl), context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final slideImages = context.introSlideImages.map(
-      (String imageUrl) {
-        precacheImage(AssetImage(imageUrl), context);
-        return SizedBox(
-          height: double.infinity,
-          child: ClipRRect(
-            child: Transform(
-              transform: Matrix4.identity()..scale(1.15),
-              alignment: const FractionalOffset(
-                0.5,
-                0.75,
-              ),
-              child: Image.asset(
-                imageUrl,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        );
-      },
-    ).toList();
-
     final appTitle = context.appTitle;
     final buttonText = context.introButtonText;
 
@@ -66,12 +54,11 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
       fontWeight: FontWeight.w700,
     );
 
-    final pageCount = context.introSlideImages.length;
+    final pageController = ref.watch(splashPageProvider).pageController;
 
-    final pageNotifier = ref.watch(splashPageProvider.notifier);
-    final pageState = ref.watch(splashPageProvider);
-    final pageController = pageState.pageController;
     final slideTexts = context.introSlideTexts;
+    final slideImages = context.introSlideImages;
+    final pageCount = slideImages.length;
 
     return Scaffold(
       body: Stack(
@@ -100,7 +87,7 @@ class _SplashPageState extends ConsumerState<SplashPageView> {
                     final slideImage = slideImages[index];
 
                     return SlidePage(
-                      slideImage: slideImage,
+                      imageUrl: slideImage,
                       title: title,
                       subTitle: subTitle,
                     );
